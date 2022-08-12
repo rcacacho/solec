@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"    
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <ui:define name="pageTitle">
+        Consulta de Presupuestos
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h:form id="frm_content" enctype="multipart/form-data"> 
+
+            <div align="center">
+
+                <ui:define name="pageTitle">
+                    <h1 style="margin: 0 0 0 0;">Consulta de Presupuestos</h1>            
+                </ui:define>
+
+                <p:panelGrid columns="2"  styleClass="no-border" style="margin-top: 10px;">
+                    <p:outputLabel value="Nombre:"  styleClass="field-label" style="font-weight: bold;"  />
+                    <p:outputLabel value="Fechas:"  styleClass="field-label" style="font-weight: bold;"  />
+
+                    <p:inputText id="txtNombre" value="#{presupuestoBuzonMB.nombre}" style="width: 100%;"  placeholder="(nombre)"
+                                 requiredMessage="(nombre)" size="30" >
+                        <p:ajax event="blur" process="@this"  />
+                    </p:inputText>
+
+                    <p:panelGrid columns="2" styleClass="no-border" >
+                        <p:calendar id="cal_fechaInicio" placeholder="(elige una fecha)" locale="es" timeZone="America/Guatemala" pattern="dd/MM/yyyy" mask ="true"                          
+                                    value="#{listaAtencionMB.fechaInicio}" navigator="true">  
+                            <p:ajax event="dateSelect" process="@this" />
+                        </p:calendar>
+
+                        <p:calendar id="cal_fechaFin" placeholder="(elige una fecha)" locale="es" timeZone="America/Guatemala" pattern="dd/MM/yyyy" mask ="true"                          
+                                    value="#{listaAtencionMB.fechaInicio}" navigator="true">  
+                            <p:ajax event="dateSelect" process="@this" />
+                        </p:calendar>
+
+                    </p:panelGrid>
+
+                    <p:outputLabel value=""   />
+                    <p:panelGrid columns="2" styleClass="no-border" style="margin-left: 160px;">
+                        <p:commandButton value="Buscar"  
+                                         action="#{presupuestoBuzonMB.buscar()}" 
+                                         class="boton boton-imgtxt-16 b-gris4 icon-buscar"
+                                         style="background-size: 20px 20px !important; float: right;
+                                         background-position: 4px 1px !important;"   
+                                         id="btn_buscar"  icon="ui-icon-search"
+                                         update="frm_content"
+                                         onstart="start();" oncomplete="stop();"/>
+
+                        <p:commandButton value="Limpiar" 
+                                         action="#{presupuestoBuzonMB.limpiar()}"
+                                         class="boton boton-imgtxt-16 b-gris4 icon-limpiar"
+                                         style="background-size: 20px 20px !important; float: right;
+                                         background-position: 4px 1px !important;"
+                                         update="@form"  icon="ui-icon-refresh"
+                                         id="btn_limpiar"  onstart="start();" oncomplete="stop();"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+
+                <br/>
+
+                <p:dataTable id="dt_presupuesto" var="col" value="#{presupuestoBuzonMB.listPresupuesto}"
+                             emptyMessage="No hay presupuestos registrados" editable="true" 
+                             styleClass="tabla-mp" style="width: 95%" rowIndexVar="rowId"
+                             rows="15" paginator="#{presupuestoBuzonMB.listPresupuesto.size()>15}"  paginatorPosition="bottom">
+
+                    <p:column headerText="No." style="width: 5%;">
+                        #{rowId+1}
+                    </p:column>
+
+                    <p:column headerText="Nombre" width="20%" >
+                        <p:outputLabel value="#{col.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Dirección" width="25%" >
+                        <p:outputLabel value="#{col.direccion}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha creado" width="12%" >
+                        <p:outputLabel value="#{col.fechacreacion}}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column width="12%" exportable="false" >
+                        <p:commandButton value="Detalle" 
+                                         style="margin-top: 3px;" process="@this" 
+                                         styleClass="button-16 b-greylight-16" icon="ui-icon-search"
+                                         action="#{presupuestoBuzonMB.detalleCliente(col.idpresupuesto)}" update="@form"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

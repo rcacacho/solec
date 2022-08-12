@@ -58,7 +58,7 @@ public class LoginMB {
         } else {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Usuario o Contraseña invalida", "Intente de nuevo!"));
-            return "login.xhtml";
+            return "index.xhtml";
         }
     }
 

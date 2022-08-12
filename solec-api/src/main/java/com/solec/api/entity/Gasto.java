@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Gasto.findByIdgasto", query = "SELECT g FROM Gasto g WHERE g.idgasto = :idgasto"),
     @NamedQuery(name = "Gasto.findByProyecto", query = "SELECT g FROM Gasto g WHERE g.proyecto = :proyecto"),
     @NamedQuery(name = "Gasto.findByDireccion", query = "SELECT g FROM Gasto g WHERE g.direccion = :direccion"),
-    @NamedQuery(name = "Gasto.findByFechacrecion", query = "SELECT g FROM Gasto g WHERE g.fechacrecion = :fechacrecion"),
+    @NamedQuery(name = "Gasto.findByFechacrecion", query = "SELECT g FROM Gasto g WHERE g.fechacreacion = :fechacreacion"),
     @NamedQuery(name = "Gasto.findByUsuariocreacion", query = "SELECT g FROM Gasto g WHERE g.usuariocreacion = :usuariocreacion"),
     @NamedQuery(name = "Gasto.findByFechamodificacion", query = "SELECT g FROM Gasto g WHERE g.fechamodificacion = :fechamodificacion"),
     @NamedQuery(name = "Gasto.findByUsuariomodificacion", query = "SELECT g FROM Gasto g WHERE g.usuariomodificacion = :usuariomodificacion"),
@@ -60,9 +60,9 @@ public class Gasto implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fechacrecion")
+    @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechacrecion;
+    private Date fechacreacion;
     
     @Basic(optional = false)
     @NotNull
@@ -99,7 +99,7 @@ public class Gasto implements Serializable {
 
     public Gasto(Integer idgasto, Date fechacrecion, String usuariocreacion, boolean activo) {
         this.idgasto = idgasto;
-        this.fechacrecion = fechacrecion;
+        this.fechacreacion = fechacrecion;
         this.usuariocreacion = usuariocreacion;
         this.activo = activo;
     }
@@ -128,12 +128,12 @@ public class Gasto implements Serializable {
         this.direccion = direccion;
     }
 
-    public Date getFechacrecion() {
-        return fechacrecion;
+    public Date getFechacreacion() {
+        return fechacreacion;
     }
 
-    public void setFechacrecion(Date fechacrecion) {
-        this.fechacrecion = fechacrecion;
+    public void setFechacreacion(Date fechacreacion) {
+        this.fechacreacion = fechacreacion;
     }
 
     public String getUsuariocreacion() {
