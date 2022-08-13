@@ -1,15 +1,85 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"    
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml">
+
+    <ui:define name="pageTitle">
+        Consulta Tipo Cantidad
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frm_content">
+            <div align="center">
+                <ui:define name="pageTitle">
+                    <h1 style="margin: 0 0 0 0;">Consulta Tipo Cantidad</h1>            
+                </ui:define>
+                <br/>
+
+                <div>
+                    <p:commandButton value="Agregar Tipo Cantidad" style="float:left!important; margin-left:7.5% !important; margin-top: -15px!important;" styleClass="button-16 b-greylight-16" icon="ui-icon-plus" 
+                                     action="#{listaTipoCantidadMB.linkRegistro()}" update="@all"/>
+                </div>
+                <br />
+
+                <p:dataTable id="dt_TipoC" var="col" value="#{listaTipoCantidadMB.listTipoCantidad}"
+                             emptyMessage="No hay insumos registrados" editable="true"
+                             styleClass="tabla-mp" style="width: 95%" rowIndexVar="rowId"
+                             rows="10" paginator="#{listaTipoCantidadMB.listTipoCantidad.size()>5}"  paginatorPosition="bottom">
+
+                    <p:ajax event="rowEdit" listener="#{listaTipoCantidadMB.onRowEdit}" update="dt_TipoC" />
+
+                    <p:column headerText="No." style="width: 5%;">
+                        #{rowId+1}
+                    </p:column>
+
+                    <p:column headerText="Nombre" style="width:22%;">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{col.nombres}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputTextarea value="#{col.nombres}" id="nombre"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Descripción" width="22%" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{col.descripcion}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputTextarea value="#{col.descripcion}" id="descrip"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    
+                    <p:column headerText="Fecha registro" width="22%" >
+                        <p:outputLabel value="#{col.fechacreacion}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column width="10%" exportable="false" >
+                        <h:commandLink action="#{listaTipoCantidadMB.detalle(col.idtipocantidad)}" style="text-decoration: none;">
+                            <h:graphicImage library="images" name="consulta.png"   style="float: right !important;" width="20px;" title="Detalle"/>
+                        </h:commandLink>
+                    </p:column>
+                    <p:column width="13%" exportable="false" >
+                        <p:commandButton value="Eliminar" 
+                                         style="float:left!important; margin-left:7.5% !important;" process="@this" 
+                                         styleClass="button-16 b-greylight-16" icon="ui-icon-closethick"
+                                         action="#{listaTipoCantidadMB.eliminar(col.idtipocantidad)}" update="@form"/>
+                    </p:column>
+                    <p:column headerText="Editar" width="5%">
+                        <p:rowEditor />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

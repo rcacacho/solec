@@ -45,37 +45,45 @@ public class Tipocantidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "idtipocantidad")
     private Integer idtipocantidad;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
     @Column(name = "nombres")
     private String nombres;
-    
+
     @Size(max = 1000)
     @Column(name = "descripcion")
     private String descripcion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
-    
+
+    @Column(name = "fechaeliminacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaeliminacion;
+
+    @Size(max = 50)
+    @Column(name = "usuarioeliminacion")
+    private String usuarioeliminacion;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipocantidad", fetch = FetchType.LAZY)
     private List<Detallepresupuesto> detallepresupuestoList;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipocantidad", fetch = FetchType.LAZY)
     private List<Detallegasto> detallegastoList;
 
@@ -142,6 +150,22 @@ public class Tipocantidad implements Serializable {
         this.activo = activo;
     }
 
+    public Date getFechaeliminacion() {
+        return fechaeliminacion;
+    }
+
+    public void setFechaeliminacion(Date fechaeliminacion) {
+        this.fechaeliminacion = fechaeliminacion;
+    }
+
+    public String getUsuarioeliminacion() {
+        return usuarioeliminacion;
+    }
+
+    public void setUsuarioeliminacion(String usuarioeliminacion) {
+        this.usuarioeliminacion = usuarioeliminacion;
+    }
+
     @XmlTransient
     public List<Detallepresupuesto> getDetallepresupuestoList() {
         return detallepresupuestoList;
@@ -184,5 +208,5 @@ public class Tipocantidad implements Serializable {
     public String toString() {
         return "com.solec.api.entity.Tipocantidad[ idtipocantidad=" + idtipocantidad + " ]";
     }
-    
+
 }

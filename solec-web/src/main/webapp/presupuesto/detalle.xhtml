@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"     
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/template.xhtml"
+                xmlns:shiro="http://shiro.apache.org/tags">
+
+    <f:metadata>
+        <f:viewParam name="idconfiguracionpago" value="#{detallePresupuestoMB.idpresupuesto}"/>
+        <f:event type="preRenderView" listener="#{detallePresupuestoMB.cargarDatos()}"/>
+    </f:metadata>
+
+    <ui:define name="pageTitle">
+        Detalle presupuesto
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frm_content">
+
+            <table style="width: 100%; margin-top: 23px;">
+                <tr>
+                    <td style="width: 50%;">
+                        <p:outputLabel value="1. Información de la configuración" 
+                                       style="font-size: 16px !important; display: block; width: 100%; text-align: left;" />
+                    </td>
+                    <td style="width: 50%;vertical-align: bottom;text-align: right!important;font-size: 13px;">
+                        <h:commandLink action="#{detallePresupuestoMB.regresar()}" style="text-decoration: none; margin-left: 25px;">
+                            <h:graphicImage library="images" name="regreso.png"   style="float: right !important;" width="20px;" title="Regresar"/>
+                        </h:commandLink>
+                    </td>
+                </tr>
+            </table>
+
+            <hr class="hr-mp" style="margin-bottom: 10px!important;"/>
+
+            <p:panelGrid  id="pg_info" styleClass="no-border" style="width: 90%; margin-left: 4%;">
+                <p:row>
+                    <p:column >
+                        <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Valor:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Fecha Creación:" styleClass="colorTitulo" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{detalleConfiguracionMB.configuracion.descripcion}" style="font-size: 16px!important;"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{detalleConfiguracionMB.configuracion.valor}" style="font-size: 16px!important;">
+                        </p:outputLabel> 
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{detalleConfiguracionMB.configuracion.fechacreacion}" style="font-size: 16px!important;">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+            <table style="width: 100%; margin-top: 23px;">
+                <tr>
+                    <td style="width: 50%;">
+                        <p:outputLabel value="2. Materiales presupuesto" 
+                                       style="font-size: 16px !important; display: block; width: 100%; text-align: left;" />
+                    </td>
+                </tr>
+            </table>
+
+            <hr class="hr-mp" style="margin-bottom: 10px!important;"/>
+
+            <p:panelGrid  id="pg_info2" styleClass="no-border" style="width: 90%; margin-left: 4%;">
+                <p:row>
+                    <p:column >
+                        <p:outputLabel value="Tipo Gasto:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Tipo Cantidad:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:selectOneMenu id="gas" value="#{listaAtencionMB.idRuta}" style="width: 150px;" 
+                                         converter="entityConverter" filter="true" filterMatchMode="contains">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItem itemLabel="(selecciona una ruta)" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{listaAtencionMB.listRuta}"  var="rut" itemLabel="#{rut.ruta}" itemValue="#{rut.idruta}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="ca" value="#{listaAtencionMB.idRuta}" style="width: 150px;" 
+                                         converter="entityConverter" filter="true" filterMatchMode="contains">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItem itemLabel="(selecciona una ruta)" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{listaAtencionMB.listRuta}"  var="rut" itemLabel="#{rut.ruta}" itemValue="#{rut.idruta}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:inputText  value="#{registroConfiguracionMB.configuracion.descripcion}" style="width: 350px;"  
+                                      placeholder="Ingrese la descripción" required="true" requiredMessage="Debes ingresar una descripción" >
+                            <p:ajax event="blur" process="@this"/>
+                        </p:inputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column >
+                        <p:outputLabel value="Cantidad:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Valor unitario:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Total:" styleClass="colorTitulo" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                </p:row>
+
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

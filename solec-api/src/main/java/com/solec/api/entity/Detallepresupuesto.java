@@ -45,6 +45,10 @@ public class Detallepresupuesto implements Serializable {
     @Column(name = "iddetallepresupuesto")
     private Integer iddetallepresupuesto;
 
+    @Size(min = 1, max = 500)
+    @Column(name = "descripcion")
+    private String descripcion;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
@@ -76,15 +80,15 @@ public class Detallepresupuesto implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    
+
     @JoinColumn(name = "idpresupuesto", referencedColumnName = "idpresupuesto")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Presupuesto idpresupuesto;
-    
+
     @JoinColumn(name = "idtipocantidad", referencedColumnName = "idtipocantidad")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Tipocantidad idtipocantidad;
-    
+
     @JoinColumn(name = "idtipogasto", referencedColumnName = "idtipogasto")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Tipogasto idtipogasto;
@@ -209,6 +213,14 @@ public class Detallepresupuesto implements Serializable {
     @Override
     public String toString() {
         return "com.solec.api.entity.Detallepresupuesto[ iddetallepresupuesto=" + iddetallepresupuesto + " ]";
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
 }
