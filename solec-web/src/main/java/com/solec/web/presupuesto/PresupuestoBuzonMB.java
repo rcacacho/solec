@@ -48,8 +48,8 @@ public class PresupuestoBuzonMB implements Serializable {
         fechaInicio = null;
     }
 
-    public void detalleCliente(Integer id) {
-        JsfUtil.redirectTo("/presupuesto/detalle.xhtml?idPresupuesto=" + id);
+    public void detallePresupuesto(Integer id) {
+        JsfUtil.redirectTo("/presupuesto/detalle.xhtml?idpresupuesto=" + id);
     }
 
     /*Metodos getters y setters*/

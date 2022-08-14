@@ -45,37 +45,40 @@ public class Presupuesto implements Serializable {
     @Basic(optional = false)
     @Column(name = "idpresupuesto")
     private Integer idpresupuesto;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
     @Column(name = "nombre")
     private String nombre;
-    
+
     @Size(max = 500)
     @Column(name = "direccion")
     private String direccion;
-    
+
+    @Column(name = "totalpresupuesto")
+    private Double totalpresupuesto;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpresupuesto", fetch = FetchType.LAZY)
     private List<Detallepresupuesto> detallepresupuestoList;
-    
+
     @OneToMany(mappedBy = "idpresupuesto", fetch = FetchType.LAZY)
     private List<Gasto> gastoList;
 
@@ -183,6 +186,14 @@ public class Presupuesto implements Serializable {
     @Override
     public String toString() {
         return "com.solec.api.entity.Presupuesto[ idpresupuesto=" + idpresupuesto + " ]";
+    }
+
+    public Double getTotalpresupuesto() {
+        return totalpresupuesto;
+    }
+
+    public void setTotalpresupuesto(Double totalpresupuesto) {
+        this.totalpresupuesto = totalpresupuesto;
     }
 
 }

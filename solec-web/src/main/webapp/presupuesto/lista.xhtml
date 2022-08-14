@@ -31,13 +31,13 @@
                     </p:inputText>
 
                     <p:panelGrid columns="2" styleClass="no-border" >
-                        <p:calendar id="cal_fechaInicio" placeholder="(elige una fecha)" locale="es" timeZone="America/Guatemala" pattern="dd/MM/yyyy" mask ="true"                          
-                                    value="#{listaAtencionMB.fechaInicio}" navigator="true">  
+                        <p:calendar id="cal_fechaInicio" placeholder="(elige una fecha inicio)" locale="es" timeZone="America/Guatemala" pattern="dd/MM/yyyy" mask ="true"                          
+                                    value="#{presupuestoBuzonMB.fechaInicio}" navigator="true">  
                             <p:ajax event="dateSelect" process="@this" />
                         </p:calendar>
 
-                        <p:calendar id="cal_fechaFin" placeholder="(elige una fecha)" locale="es" timeZone="America/Guatemala" pattern="dd/MM/yyyy" mask ="true"                          
-                                    value="#{listaAtencionMB.fechaInicio}" navigator="true">  
+                        <p:calendar id="cal_fechaFin" placeholder="(elige una fecha fin)" locale="es" timeZone="America/Guatemala" pattern="dd/MM/yyyy" mask ="true"                          
+                                    value="#{presupuestoBuzonMB.fechaFin}" navigator="true">  
                             <p:ajax event="dateSelect" process="@this" />
                         </p:calendar>
 
@@ -93,7 +93,7 @@
                         <p:commandButton value="Detalle" 
                                          style="margin-top: 3px;" process="@this" 
                                          styleClass="button-16 b-greylight-16" icon="ui-icon-search"
-                                         action="#{presupuestoBuzonMB.detalleCliente(col.idpresupuesto)}" update="@form"/>
+                                         action="#{presupuestoBuzonMB.detallePresupuesto(col.idpresupuesto)}" update="@form"/>
                     </p:column>
                 </p:dataTable>
             </div>

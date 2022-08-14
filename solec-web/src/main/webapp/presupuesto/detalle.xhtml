@@ -9,7 +9,7 @@
                 xmlns:shiro="http://shiro.apache.org/tags">
 
     <f:metadata>
-        <f:viewParam name="idconfiguracionpago" value="#{detallePresupuestoMB.idpresupuesto}"/>
+        <f:viewParam name="idpresupuesto" value="#{detallePresupuestoMB.idpresupuesto}"/>
         <f:event type="preRenderView" listener="#{detallePresupuestoMB.cargarDatos()}"/>
     </f:metadata>
 
@@ -27,7 +27,8 @@
                                        style="font-size: 16px !important; display: block; width: 100%; text-align: left;" />
                     </td>
                     <td style="width: 50%;vertical-align: bottom;text-align: right!important;font-size: 13px;">
-                        <h:commandLink action="#{detallePresupuestoMB.regresar()}" style="text-decoration: none; margin-left: 25px;">
+                        <h:commandLink action="#{detallePresupuestoMB.regresar()}" style="text-decoration: none; margin-left: 25px;"
+                                       immediate="true" >
                             <h:graphicImage library="images" name="regreso.png"   style="float: right !important;" width="20px;" title="Regresar"/>
                         </h:commandLink>
                     </td>
@@ -39,10 +40,10 @@
             <p:panelGrid  id="pg_info" styleClass="no-border" style="width: 90%; margin-left: 4%;">
                 <p:row>
                     <p:column >
-                        <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
+                        <p:outputLabel value="Nombre:" styleClass="colorTitulo" />
                     </p:column>
                     <p:column >
-                        <p:outputLabel value="Valor:" styleClass="colorTitulo" />
+                        <p:outputLabel value="Dirección:" styleClass="colorTitulo" />
                     </p:column>
                     <p:column >
                         <p:outputLabel value="Fecha Creación:" styleClass="colorTitulo" />
@@ -51,16 +52,28 @@
 
                 <p:row>
                     <p:column>
-                        <p:outputLabel value="#{detalleConfiguracionMB.configuracion.descripcion}" style="font-size: 16px!important;"/>
+                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.nombre}" style="font-size: 16px!important;"/>
                     </p:column>
                     <p:column>
-                        <p:outputLabel value="#{detalleConfiguracionMB.configuracion.valor}" style="font-size: 16px!important;">
+                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.direccion}" style="font-size: 16px!important;">
                         </p:outputLabel> 
                     </p:column>
                     <p:column>
-                        <p:outputLabel value="#{detalleConfiguracionMB.configuracion.fechacreacion}" style="font-size: 16px!important;">
+                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.fechacreacion}" style="font-size: 16px!important;">
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:outputLabel>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column >
+                        <p:outputLabel value="Total gastado:" styleClass="colorTitulo" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.totalpresupuesto}" style="font-size: 16px!important;">
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel> 
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -91,27 +104,29 @@
 
                 <p:row>
                     <p:column>
-                        <p:selectOneMenu id="gas" value="#{listaAtencionMB.idRuta}" style="width: 150px;" 
+                        <p:selectOneMenu id="gas" value="#{detallePresupuestoMB.tipoGastoSelected}" style="width: 150px;" 
                                          converter="entityConverter" filter="true" filterMatchMode="contains">
                             <p:ajax event="itemSelect"/>
-                            <f:selectItem itemLabel="(selecciona una ruta)" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{listaAtencionMB.listRuta}"  var="rut" itemLabel="#{rut.ruta}" itemValue="#{rut.idruta}"/>
+                            <f:selectItem itemLabel="(selecciona un tipo gasto)" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{detallePresupuestoMB.listTipoGasto}"  var="rut" itemLabel="#{rut.nombregasto}" itemValue="#{rut}"/>
                         </p:selectOneMenu>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="ca" value="#{listaAtencionMB.idRuta}" style="width: 150px;" 
+                        <p:selectOneMenu id="ca" value="#{detallePresupuestoMB.tipoCantidadSelected}" style="width: 150px;" 
                                          converter="entityConverter" filter="true" filterMatchMode="contains">
                             <p:ajax event="itemSelect"/>
-                            <f:selectItem itemLabel="(selecciona una ruta)" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{listaAtencionMB.listRuta}"  var="rut" itemLabel="#{rut.ruta}" itemValue="#{rut.idruta}"/>
+                            <f:selectItem itemLabel="(selecciona un tipo de Cantidad)" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{detallePresupuestoMB.listTipoCantidad}"  var="rut" itemLabel="#{rut.nombres}" itemValue="#{rut}"/>
                         </p:selectOneMenu>
                     </p:column>
                     <p:column>
-                        <p:inputText  value="#{registroConfiguracionMB.configuracion.descripcion}" style="width: 350px;"  
+                        <p:inputText  value="#{detallePresupuestoMB.detalle.descripcion}" style="width: 300px;"  
                                       placeholder="Ingrese la descripción" required="true" requiredMessage="Debes ingresar una descripción" >
                             <p:ajax event="blur" process="@this"/>
                         </p:inputText>
                     </p:column>
+
+                    <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
                 </p:row>
                 <p:row>
                     <p:column >
@@ -126,9 +141,90 @@
                 </p:row>
 
                 <p:row>
+                    <p:column>
+                        <p:inputText  value="#{detallePresupuestoMB.detalle.cantidad}" style="width: 250px;"  
+                                      placeholder="Ingrese una cantidad" required="true" requiredMessage="Debes ingresar una cantidad" >
+                            <p:ajax event="blur" process="@this"/>
+                        </p:inputText>
+                    </p:column>
+                    <p:column>
+                        <p:inputText  value="#{detallePresupuestoMB.detalle.valorunitario}" style="width: 250px;"  
+                                      placeholder="Ingrese un valor unitario" required="true" requiredMessage="Debes ingresar un valor unitario" >
+                            <p:ajax event="blur" process="@this" listener="#{detallePresupuestoMB.calcularTotal()}" update="total" />
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:inputText>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{detallePresupuestoMB.detalle.total}" id="total" >
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel>
+                    </p:column>
                 </p:row>
 
+                <p:row>
+                    <p:column>
+                        <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                                      mode="advanced" 
+                                      update="messages"
+                                      label="Cargar"
+                                      sizeLimit="100000" 
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 40%;  font-size: 14px;"  >
+                            <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@form"  
+                                             style=" margin-left: 5px; " update="@form"/>
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
+
+            <p:dataTable id="dt_detalle" var="col" value="#{detallePresupuestoMB.listDetalle}"
+                         emptyMessage="No hay presupuestos registrados" editable="true" 
+                         styleClass="tabla-mp" style="width: 95%" rowIndexVar="rowId"
+                         rows="15" paginator="#{detallePresupuestoMB.listDetalle.size()>15}"  paginatorPosition="bottom">
+
+                <p:column headerText="No." style="width: 5%;">
+                    #{rowId+1}
+                </p:column>
+
+                <p:column headerText="Tipo Cantidad" width="20%" >
+                    <p:outputLabel value="#{col.idtipocantidad.nombres}"/>
+                </p:column>
+
+                <p:column headerText="Tipo Gasto" width="25%" >
+                    <p:outputLabel value="#{col.idtipogasto.nombregasto}"/>
+                </p:column>
+
+                <p:column headerText="Descripción" width="25%" >
+                    <p:outputLabel value="#{col.descripcion}"/>
+                </p:column>
+
+                <p:column headerText="Cantidad" width="10%" >
+                    <p:outputLabel value="#{col.cantidad}"/>
+                </p:column>
+
+                <p:column headerText="Valor unitario" width="10%" >
+                    <p:outputLabel value="#{col.valorunitario}">
+                        <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                    </p:outputLabel>
+                </p:column>
+
+
+                <p:column headerText="Total" width="12%" >
+                    <p:outputLabel value="#{col.total}">
+                        <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                    </p:outputLabel>
+                </p:column>
+
+                <p:column headerText="Fecha creado" width="12%" >
+                    <p:outputLabel value="#{col.fechacreacion}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:outputLabel>
+                </p:column>
+            </p:dataTable>
         </h:form>
     </ui:define>
 </ui:composition>

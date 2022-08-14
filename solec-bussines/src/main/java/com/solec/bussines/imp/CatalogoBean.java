@@ -57,7 +57,7 @@ public class CatalogoBean implements CatalogoBeanLocal {
     }
 
     @Override
-    public List<Tipogasto> ListYipoGasto() {
+    public List<Tipogasto> ListTipoGasto() {
         List<Tipogasto> lst = em.createQuery("SELECT qj FROM Tipogasto qj where qj.activo = true ", Tipogasto.class)
                 .getResultList();
 

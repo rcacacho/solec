@@ -1,6 +1,7 @@
 package com.solec.bussines.imp;
 
 import com.solec.api.ejb.PresupuestoBeanLocal;
+import com.solec.api.entity.Detallepresupuesto;
 import com.solec.api.entity.Presupuesto;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +59,7 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
 
     @Override
     public Presupuesto savePresupuesto(Presupuesto presupuesto) {
-       try {
+        try {
             presupuesto.setActivo(true);
             presupuesto.setFechacreacion(new Date());
             em.persist(presupuesto);
@@ -78,7 +79,7 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
 
     @Override
     public Presupuesto updatePresupuesto(Presupuesto presupuesto) {
-      try {
+        try {
             em.merge(presupuesto);
             em.flush();
             return (presupuesto);
@@ -112,11 +113,63 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
 
     @Override
     public Presupuesto findPresupuesto(Integer idpresupuesto) {
-      if (idpresupuesto == null) {
+        if (idpresupuesto == null) {
             return null;
         }
 
         List<Presupuesto> lst = em.createQuery("SELECT col FROM Presupuesto col WHERE col.idpresupuesto =:idpresupuesto ", Presupuesto.class)
+                .setParameter("idpresupuesto", idpresupuesto)
+                .getResultList();
+
+        if (lst == null || lst.isEmpty()) {
+            return null;
+        }
+        return lst.get(0);
+    }
+
+    @Override
+    public Detallepresupuesto saveDetallePresupuesto(Detallepresupuesto detallePresupuesto) {
+        try {
+            detallePresupuesto.setActivo(true);
+            detallePresupuesto.setFechacreacion(new Date());
+            em.persist(detallePresupuesto);
+            em.flush();
+            return (detallePresupuesto);
+        } catch (ConstraintViolationException ex) {
+            String validationError = getConstraintViolationExceptionAsString(ex);
+            log.error(validationError);
+            context.setRollbackOnly();
+            return null;
+        } catch (Exception ex) {
+            processException(ex);
+            context.setRollbackOnly();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Detallepresupuesto> ListDetallePresupuestoByIdPresupuesto(Integer idpresupuesto) {
+        if (idpresupuesto == null) {
+            return null;
+        }
+
+        List<Detallepresupuesto> lst = em.createQuery("SELECT col FROM Detallepresupuesto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto ", Detallepresupuesto.class)
+                .setParameter("idpresupuesto", idpresupuesto)
+                .getResultList();
+
+        if (lst == null || lst.isEmpty()) {
+            return null;
+        }
+        return lst;
+    }
+
+    @Override
+    public Double finDetallePresupuestoSumByIdPresupuesto(Integer idpresupuesto) {
+        if (idpresupuesto == null) {
+            return null;
+        }
+
+        List<Double> lst = em.createQuery("SELECT sum (col.total) FROM Detallepresupuesto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto ", Double.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 
