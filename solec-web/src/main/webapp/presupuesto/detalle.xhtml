@@ -18,7 +18,7 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="frm_content">
+        <h:form id="frm_content" enctype="multipart/form-data">
 
             <table style="width: 100%; margin-top: 23px;">
                 <tr>
@@ -89,13 +89,13 @@
 
             <hr class="hr-mp" style="margin-bottom: 10px!important;"/>
 
-            <p:panelGrid  id="pg_info2" styleClass="no-border" style="width: 90%; margin-left: 4%;">
+            <p:panelGrid  id="pg_info2" styleClass="no-border" style="width: 100%; margin-left: 4%;">
                 <p:row>
                     <p:column >
-                        <p:outputLabel value="Tipo Gasto:" styleClass="colorTitulo" />
+                        <p:outputLabel value="Unidad:" styleClass="colorTitulo" />
                     </p:column>
                     <p:column >
-                        <p:outputLabel value="Tipo Cantidad:" styleClass="colorTitulo" />
+                        <p:outputLabel value="Valor:" styleClass="colorTitulo" />
                     </p:column>
                     <p:column >
                         <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
@@ -110,14 +110,18 @@
                             <f:selectItem itemLabel="(selecciona un tipo gasto)" itemValue="" noSelectionOption="true" />
                             <f:selectItems value="#{detallePresupuestoMB.listTipoGasto}"  var="rut" itemLabel="#{rut.nombregasto}" itemValue="#{rut}"/>
                         </p:selectOneMenu>
+                        <p:commandButton value="Agregar" action="#{detallePresupuestoMB.cargarDialogUnidad()}" icon="ui-icon-plus"
+                                         style=" margin-left: 5px; "  update="dlgUnidad" process="@this"/>
                     </p:column>
                     <p:column>
                         <p:selectOneMenu id="ca" value="#{detallePresupuestoMB.tipoCantidadSelected}" style="width: 150px;" 
                                          converter="entityConverter" filter="true" filterMatchMode="contains">
                             <p:ajax event="itemSelect"/>
-                            <f:selectItem itemLabel="(selecciona un tipo de Cantidad)" itemValue="" noSelectionOption="true" />
+                            <f:selectItem itemLabel="(selecciona un tipo de valor)" itemValue="" noSelectionOption="true" />
                             <f:selectItems value="#{detallePresupuestoMB.listTipoCantidad}"  var="rut" itemLabel="#{rut.nombres}" itemValue="#{rut}"/>
                         </p:selectOneMenu>
+                        <p:commandButton value="Agregar" action="#{detallePresupuestoMB.cargarDialogValor()}" icon="ui-icon-plus"
+                                         style=" margin-left: 5px; "  update="dlgValor" process="@this"/>
                     </p:column>
                     <p:column>
                         <p:inputText  value="#{detallePresupuestoMB.detalle.descripcion}" style="width: 300px;"  
@@ -163,12 +167,8 @@
 
                 <p:row>
                     <p:column>
-                        <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
-                                      mode="advanced" 
-                                      update="messages"
-                                      label="Cargar"
-                                      sizeLimit="100000" 
-                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                        <p:fileUpload  value="#{detallePresupuestoMB.upload}" mode="simple" skinSimple="true" label="Subir archivo"
+                                       style="margin-top: 15px !important;" auto="true"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -225,6 +225,52 @@
                     </p:outputLabel>
                 </p:column>
             </p:dataTable>
+
+            <p:dialog header="Registro Unidad" widgetVar="dlgUnidad" id="dlgUnidad" 
+                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="450px">
+                <p:panelGrid id="pg" columns="1" styleClass="no-border" style="width: 100%;"  >
+                    <p:outputLabel value="Nombre:" styleClass="colorTitulo" style="font-weight: bold;" />
+                    <p:inputText value="#{detallePresupuestoMB.tipoCantidad.nombres}" size="50" style="font-size: 16px!important;"
+                                 required="true" requiredMessage="Debes ingresar un nombre">
+                        <p:ajax event="blur" process="@this"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Descripción:" styleClass="colorTitulo" style="font-weight: bold;" />
+                    <p:inputText value="#{detallePresupuestoMB.tipoCantidad.descripcion}" size="50" style="font-size: 16px!important;"
+                                 required="true" requiredMessage="Debes ingresar una descripción">
+                        <p:ajax event="blur" process="@this"/>
+                    </p:inputText>
+
+                    <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >
+                        <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveUnidad()}" icon="ui-icon-disk" process="pgProve"  
+                                         style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar la unidad?');" update="@form"/>
+                        <p:commandButton value="Cancelar" process="@this" action="#{detallePresupuestoMB.cerrarDialogUnidad()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
+                    </p:outputPanel>
+                </p:panelGrid>
+            </p:dialog>
+
+            <p:dialog header="Registro Valor" widgetVar="dlgValor" id="dlgValor" 
+                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="450px">
+                <p:panelGrid id="pgProve" columns="1" styleClass="no-border" style="width: 100%;"  >
+                    <p:outputLabel value="Nombre:" styleClass="colorTitulo" style="font-weight: bold;" />
+                    <p:inputText value="#{detallePresupuestoMB.tipoGasto.nombregasto}" size="50" style="font-size: 16px!important;"
+                                 required="true" requiredMessage="Debes ingresar un nit">
+                        <p:ajax event="blur" process="@this"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Descripción:" styleClass="colorTitulo" style="font-weight: bold;" />
+                    <p:inputText value="#{detallePresupuestoMB.tipoGasto.descripciongasto}" size="50" style="font-size: 16px!important;"
+                                 required="true" requiredMessage="Debes ingresar un nombre">
+                        <p:ajax event="blur" process="@this"/>
+                    </p:inputText>
+
+                    <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >
+                        <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveValor()}" icon="ui-icon-disk" process="pgProve"  
+                                         style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar al proveedor?');" update="@form"/>
+                        <p:commandButton value="Cancelar" process="@this" action="#{detallePresupuestoMB.cerrarDialogValor()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
+                    </p:outputPanel>
+                </p:panelGrid>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>
