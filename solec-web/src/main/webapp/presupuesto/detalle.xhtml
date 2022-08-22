@@ -164,16 +164,7 @@
                         </p:outputLabel>
                     </p:column>
                 </p:row>
-
-                <p:row>
-                    <p:column>
-                        <p:fileUpload fileUploadListener="#{detallePresupuestoMB.upload}"
-                                      mode="advanced" 
-                                      update="messages"
-                                      sizeLimit="100000" 
-                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
-                    </p:column>
-                </p:row>
+                
                 <p:row>
                     <p:column>
                         <p:outputPanel  style="margin-top: 7%; margin-bottom: 20px; margin-right: 6%; margin-left: 100%;  font-size: 14px;"  >
@@ -187,7 +178,7 @@
                                              styleClass="button-16 b-greylight-16" icon="ui-icon-print"
                                              onclick="PrimeFaces.monitorDownload(start, stop);" 
                                              immediate="true" process="@this" update="@form" ajax="false">
-                                <p:fileDownload value="#{reporteClienteMB.generarPdfClientes()}"/>
+                                <p:fileDownload value="#{detallePresupuestoMB.generarPdf()}"/>
                             </p:commandButton>
                         </p:outputPanel>
                     </p:column>

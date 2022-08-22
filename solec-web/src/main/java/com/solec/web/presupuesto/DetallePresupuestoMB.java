@@ -14,10 +14,7 @@ import com.solec.web.utils.ReporteJasper;
 import com.solec.web.utils.SesionUsuarioMB;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +51,7 @@ public class DetallePresupuestoMB implements Serializable {
     private TipoCantidadBeanLocal tipoCantidadBean;
     @EJB
     private TipoGastoBeanLocal tipoGastoBean;
-    @Resource(lookup = "jdbc/telecosta")
+    @Resource(lookup = "jdbc/solec")
     private DataSource dataSource;
 
     private Integer idpresupuesto;
@@ -160,7 +157,7 @@ public class DetallePresupuestoMB implements Serializable {
                 "Your Photo (File Name " + fileName + " with size " + uf.getSize() + ")  Uploaded Successfully", ""));
     }
 
-    public StreamedContent generarPdfClientes() {
+    public StreamedContent generarPdf() {
         try {
             ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String realPath = servletContext.getRealPath("/");
@@ -171,7 +168,9 @@ public class DetallePresupuestoMB implements Serializable {
             parametros.put("IMAGE", "logo.jpeg");
             parametros.put("DIRECTORIO", realPath + File.separator + "resources" + File.separator + "images" + File.separator);
             parametros.put("USUARIO", SesionUsuarioMB.getUserName());
-
+            parametros.put("ID_PRESUPUESTO", idpresupuesto);
+            parametros.put("TOTAL", presupuesto.getTotalpresupuesto());
+            
             ReporteJasper reporteJasper = JasperUtil.jasperReportPDF(nombreReporte, nombreArchivo, parametros, dataSource);
             StreamedContent streamedContent;
             FileInputStream stream = new FileInputStream(realPath + "resources/reports/" + reporteJasper.getFileName());
