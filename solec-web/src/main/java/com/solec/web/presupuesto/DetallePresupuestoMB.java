@@ -8,23 +8,32 @@ import com.solec.api.entity.Detallepresupuesto;
 import com.solec.api.entity.Presupuesto;
 import com.solec.api.entity.Tipocantidad;
 import com.solec.api.entity.Tipogasto;
+import com.solec.web.utils.JasperUtil;
 import com.solec.web.utils.JsfUtil;
+import com.solec.web.utils.ReporteJasper;
 import com.solec.web.utils.SesionUsuarioMB;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -45,6 +54,8 @@ public class DetallePresupuestoMB implements Serializable {
     private TipoCantidadBeanLocal tipoCantidadBean;
     @EJB
     private TipoGastoBeanLocal tipoGastoBean;
+    @Resource(lookup = "jdbc/telecosta")
+    private DataSource dataSource;
 
     private Integer idpresupuesto;
     private Presupuesto presupuesto;
@@ -136,12 +147,43 @@ public class DetallePresupuestoMB implements Serializable {
     }
 
     public void upload(FileUploadEvent event) {
-        UploadedFile uploadedFile = event.getFile();
-        String fileName = uploadedFile.getFileName();
-        String contentType = uploadedFile.getContentType();
-        byte[] contents = uploadedFile.getContents(); // Or getInputStream()
-        // ... Save it, now!
+        UploadedFile uf = event.getFile();
+        String fileName = uf.getFileName();
+        String contentType = uf.getContentType();
+        byte[] contents = uf.getContents(); // Or getInputStream()
+//        Multimedia image=super.getSelected();
+//        image.setFileBlob(contents);
+//        image.setFilename(fileName);
+//        image.setContentType(contentType);
+//        super.setSelected(image);
+        FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Your Photo (File Name " + fileName + " with size " + uf.getSize() + ")  Uploaded Successfully", ""));
     }
+
+    public StreamedContent generarPdfClientes() {
+        try {
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String realPath = servletContext.getRealPath("/");
+            String nombreReporte = "rptPresupuestado";
+            String nombreArchivo = "Presupuesto.pdf";
+
+            HashMap parametros = new HashMap();
+            parametros.put("IMAGE", "logo.jpeg");
+            parametros.put("DIRECTORIO", realPath + File.separator + "resources" + File.separator + "images" + File.separator);
+            parametros.put("USUARIO", SesionUsuarioMB.getUserName());
+
+            ReporteJasper reporteJasper = JasperUtil.jasperReportPDF(nombreReporte, nombreArchivo, parametros, dataSource);
+            StreamedContent streamedContent;
+            FileInputStream stream = new FileInputStream(realPath + "resources/reports/" + reporteJasper.getFileName());
+            streamedContent = new DefaultStreamedContent(stream, "application/pdf", reporteJasper.getFileName());
+            return streamedContent;
+        } catch (Exception ex) {
+            log.error(ex);
+            JsfUtil.addErrorMessage("Ocurrio un error al generar el pdf del reporte");
+        }
+        return null;
+    }
+
 
     /*Metodos getters y setters*/
     public Integer getIdpresupuesto() {

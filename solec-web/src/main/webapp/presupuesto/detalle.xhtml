@@ -167,15 +167,28 @@
 
                 <p:row>
                     <p:column>
-                        <p:fileUpload  value="#{detallePresupuestoMB.upload}" mode="simple" skinSimple="true" label="Subir archivo"
-                                       style="margin-top: 15px !important;" auto="true"/>
+                        <p:fileUpload fileUploadListener="#{detallePresupuestoMB.upload}"
+                                      mode="advanced" 
+                                      update="messages"
+                                      sizeLimit="100000" 
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 40%;  font-size: 14px;"  >
+                        <p:outputPanel  style="margin-top: 7%; margin-bottom: 20px; margin-right: 6%; margin-left: 100%;  font-size: 14px;"  >
                             <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@form"  
                                              style=" margin-left: 5px; " update="@form"/>
+                        </p:outputPanel>
+                    </p:column>
+                    <p:column>
+                        <p:outputPanel  style=" margin-bottom: 5px; margin-right: 6%; margin-left: 30%;  font-size: 14px;"  >
+                            <p:commandButton value="Imprimir" style="float: left;"
+                                             styleClass="button-16 b-greylight-16" icon="ui-icon-print"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);" 
+                                             immediate="true" process="@this" update="@form" ajax="false">
+                                <p:fileDownload value="#{reporteClienteMB.generarPdfClientes()}"/>
+                            </p:commandButton>
                         </p:outputPanel>
                     </p:column>
                 </p:row>
@@ -211,7 +224,6 @@
                         <f:convertNumber groupingUsed="true" minFractionDigits="2" />
                     </p:outputLabel>
                 </p:column>
-
 
                 <p:column headerText="Total" width="12%" >
                     <p:outputLabel value="#{col.total}">
