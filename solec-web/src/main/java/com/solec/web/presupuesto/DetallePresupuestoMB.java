@@ -68,6 +68,8 @@ public class DetallePresupuestoMB implements Serializable {
 
     public DetallePresupuestoMB() {
         detalle = new Detallepresupuesto();
+        tipoGasto = new Tipogasto();
+        tipoCantidad = new Tipocantidad();
     }
 
     public void cargarDatos() {
@@ -127,6 +129,7 @@ public class DetallePresupuestoMB implements Serializable {
 
     public void saveUnidad() throws IOException {
         tipoCantidad.setUsuariocreacion(SesionUsuarioMB.getUserName());
+        tipoCantidad.setDescripcion(tipoCantidad.getNombres());
         Tipocantidad tip = tipoCantidadBean.saveTipoCantidad(tipoCantidad);
         if (tip != null) {
             JsfUtil.addSuccessMessage("Unidad registrada exitosamente");
@@ -136,9 +139,10 @@ public class DetallePresupuestoMB implements Serializable {
 
     public void saveValor() throws IOException {
         tipoGasto.setUsuariocreacion(SesionUsuarioMB.getUserName());
+        tipoGasto.setDescripciongasto(tipoGasto.getNombregasto());
         Tipogasto tip = tipoGastoBean.saveTipoGasto(tipoGasto);
         if (tip != null) {
-            JsfUtil.addSuccessMessage("Unidad registrada exitosamente");
+            JsfUtil.addSuccessMessage("Valor registrada exitosamente");
         }
         listTipoGasto = catalogoBeanLocal.ListTipoGasto();
     }
@@ -170,7 +174,7 @@ public class DetallePresupuestoMB implements Serializable {
             parametros.put("USUARIO", SesionUsuarioMB.getUserName());
             parametros.put("ID_PRESUPUESTO", idpresupuesto);
             parametros.put("TOTAL", presupuesto.getTotalpresupuesto());
-            
+
             ReporteJasper reporteJasper = JasperUtil.jasperReportPDF(nombreReporte, nombreArchivo, parametros, dataSource);
             StreamedContent streamedContent;
             FileInputStream stream = new FileInputStream(realPath + "resources/reports/" + reporteJasper.getFileName());

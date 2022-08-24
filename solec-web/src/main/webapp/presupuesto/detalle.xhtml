@@ -104,21 +104,21 @@
 
                 <p:row>
                     <p:column>
-                        <p:selectOneMenu id="gas" value="#{detallePresupuestoMB.tipoGastoSelected}" style="width: 150px;" 
+                        <p:selectOneMenu id="gas" value="#{detallePresupuestoMB.tipoCantidadSelected}" style="width: 150px;" 
                                          converter="entityConverter" filter="true" filterMatchMode="contains">
                             <p:ajax event="itemSelect"/>
-                            <f:selectItem itemLabel="(selecciona un tipo gasto)" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{detallePresupuestoMB.listTipoGasto}"  var="rut" itemLabel="#{rut.nombregasto}" itemValue="#{rut}"/>
+                            <f:selectItem itemLabel="(selecciona una unidad)" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{detallePresupuestoMB.listTipoCantidad}"  var="rut" itemLabel="#{rut.nombres}" itemValue="#{rut}"/>
                         </p:selectOneMenu>
                         <p:commandButton value="Agregar" action="#{detallePresupuestoMB.cargarDialogUnidad()}" icon="ui-icon-plus"
                                          style=" margin-left: 5px; "  update="dlgUnidad" process="@this"/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="ca" value="#{detallePresupuestoMB.tipoCantidadSelected}" style="width: 150px;" 
+                        <p:selectOneMenu id="ca" value="#{detallePresupuestoMB.tipoGastoSelected}" style="width: 150px;" 
                                          converter="entityConverter" filter="true" filterMatchMode="contains">
                             <p:ajax event="itemSelect"/>
                             <f:selectItem itemLabel="(selecciona un tipo de valor)" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{detallePresupuestoMB.listTipoCantidad}"  var="rut" itemLabel="#{rut.nombres}" itemValue="#{rut}"/>
+                            <f:selectItems value="#{detallePresupuestoMB.listTipoGasto}"  var="rut" itemLabel="#{rut.nombregasto}" itemValue="#{rut}"/>
                         </p:selectOneMenu>
                         <p:commandButton value="Agregar" action="#{detallePresupuestoMB.cargarDialogValor()}" icon="ui-icon-plus"
                                          style=" margin-left: 5px; "  update="dlgValor" process="@this"/>
@@ -238,14 +238,8 @@
                         <p:ajax event="blur" process="@this"/>
                     </p:inputText>
 
-                    <p:outputLabel value="Descripción:" styleClass="colorTitulo" style="font-weight: bold;" />
-                    <p:inputText value="#{detallePresupuestoMB.tipoCantidad.descripcion}" size="50" style="font-size: 16px!important;"
-                                 required="true" requiredMessage="Debes ingresar una descripción">
-                        <p:ajax event="blur" process="@this"/>
-                    </p:inputText>
-
                     <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >
-                        <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveUnidad()}" icon="ui-icon-disk" process="pgProve"  
+                        <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveUnidad()}" icon="ui-icon-disk" process="dlgUnidad"  
                                          style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar la unidad?');" update="@form"/>
                         <p:commandButton value="Cancelar" process="@this" action="#{detallePresupuestoMB.cerrarDialogUnidad()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
                     </p:outputPanel>
@@ -257,19 +251,13 @@
                 <p:panelGrid id="pgProve" columns="1" styleClass="no-border" style="width: 100%;"  >
                     <p:outputLabel value="Nombre:" styleClass="colorTitulo" style="font-weight: bold;" />
                     <p:inputText value="#{detallePresupuestoMB.tipoGasto.nombregasto}" size="50" style="font-size: 16px!important;"
-                                 required="true" requiredMessage="Debes ingresar un nit">
-                        <p:ajax event="blur" process="@this"/>
-                    </p:inputText>
-
-                    <p:outputLabel value="Descripción:" styleClass="colorTitulo" style="font-weight: bold;" />
-                    <p:inputText value="#{detallePresupuestoMB.tipoGasto.descripciongasto}" size="50" style="font-size: 16px!important;"
                                  required="true" requiredMessage="Debes ingresar un nombre">
                         <p:ajax event="blur" process="@this"/>
                     </p:inputText>
 
                     <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >
                         <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveValor()}" icon="ui-icon-disk" process="pgProve"  
-                                         style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar al proveedor?');" update="@form"/>
+                                         style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar el valor?');" update="@form"/>
                         <p:commandButton value="Cancelar" process="@this" action="#{detallePresupuestoMB.cerrarDialogValor()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
                     </p:outputPanel>
                 </p:panelGrid>
