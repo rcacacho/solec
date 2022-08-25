@@ -129,8 +129,6 @@
                             <p:ajax event="blur" process="@this"/>
                         </p:inputText>
                     </p:column>
-
-                    <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
                 </p:row>
                 <p:row>
                     <p:column >
@@ -164,7 +162,20 @@
                         </p:outputLabel>
                     </p:column>
                 </p:row>
-                
+
+                <p:row>
+                    <p:column>
+                        <p:fileUpload id="fu_file" fileUploadListener="#{detallePresupuestoMB.upload}" mode="advanced" auto="true"   
+                                      dragDropSupport="false"  
+                                      sizeLimit="10240000"  sizeLimit=""  allowTypes="/(\.|\/)(pdf|png|jpe?g|gif)$/"                        
+                                      update="@all" process="@this"
+                                      fileLimit="1" label="Adjuntar..." uploadLabel="Cargar" cancelLabel="Cancelar" invalidSizeMessage="El tamaño del archivo supera el límite permitido"
+                                      invalidFileMessage="El formato del archivo no está permitido" fileLimitMessage="Únicamente es posible cargar un archivo por cada solicitud"
+                                      styleClass="no-header" style="font-size: 13px !important; vertical-align: top; ">   
+                        </p:fileUpload>
+                    </p:column>
+                </p:row>
+
                 <p:row>
                     <p:column>
                         <p:outputPanel  style="margin-top: 7%; margin-bottom: 20px; margin-right: 6%; margin-left: 100%;  font-size: 14px;"  >
