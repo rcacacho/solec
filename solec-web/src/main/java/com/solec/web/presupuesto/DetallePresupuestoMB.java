@@ -189,6 +189,10 @@ public class DetallePresupuestoMB implements Serializable {
         }
         return null;
     }
+    
+        public StreamedContent downloadFile(Detallepresupuesto archivo) {
+        return FileUtil.getStreamedContent(archivo.getDirectorio(), archivo.getNombrearchivo());
+    }
 
 
     /*Metodos getters y setters*/

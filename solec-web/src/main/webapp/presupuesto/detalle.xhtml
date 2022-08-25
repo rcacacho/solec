@@ -233,6 +233,15 @@
                     </p:outputLabel>
                 </p:column>
 
+                <p:column headerText="Archivos" style="width: 15%;">
+                    <h:commandLink value="#{col.nombrearchivo}" 
+                                   style="font-size: 13px!important; text-align: center !important;"
+                                   onclick="PrimeFaces.monitorDownload(start, stop);"
+                                   title="Descargar" >
+                        <p:fileDownload value="#{bitacoraConstanciaMB.downloadFile(col)}"/>
+                    </h:commandLink>
+                </p:column>
+
                 <p:column headerText="Fecha creado" width="12%" >
                     <p:outputLabel value="#{col.fechacreacion}">
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
