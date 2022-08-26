@@ -153,7 +153,7 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
             return null;
         }
 
-        List<Detallepresupuesto> lst = em.createQuery("SELECT col FROM Detallepresupuesto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto ", Detallepresupuesto.class)
+        List<Detallepresupuesto> lst = em.createQuery("SELECT col FROM Detallepresupuesto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto order by col.fechacreacion desc ", Detallepresupuesto.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 

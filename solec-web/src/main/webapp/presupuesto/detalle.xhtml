@@ -177,7 +177,7 @@
             </p:panelGrid>
 
             <p:panelGrid  columns="2" styleClass="no-border" style="width: 10%; margin-left: 4%;">
-                    <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="pg_info2"  
+                    <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@this"  
                                      style=" margin-left: 5px; " update="@form"/>
       
                     <p:commandButton value="Imprimir" style="float: left;"
@@ -201,10 +201,6 @@
 
                 <p:column headerText="Tipo Cantidad" width="20%" >
                     <p:outputLabel value="#{col.idtipocantidad.nombres}"/>
-                </p:column>
-
-                <p:column headerText="Tipo Gasto" width="25%" >
-                    <p:outputLabel value="#{col.idtipogasto.nombregasto}"/>
                 </p:column>
 
                 <p:column headerText="Descripción" width="25%" >

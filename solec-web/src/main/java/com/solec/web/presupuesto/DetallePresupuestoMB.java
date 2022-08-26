@@ -109,6 +109,8 @@ public class DetallePresupuestoMB implements Serializable {
         presupuesto.setTotalpresupuesto(total);
         Presupuesto pp = presupuestoBean.updatePresupuesto(presupuesto);
         detalle = null;
+        tipoCantidadSelected = null;
+        detalle = new Detallepresupuesto();
         listDetalle = presupuestoBean.ListDetallePresupuestoByIdPresupuesto(idpresupuesto);
     }
 
