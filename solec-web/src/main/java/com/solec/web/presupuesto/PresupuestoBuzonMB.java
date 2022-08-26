@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
 import com.solec.api.ejb.ProyectoBeanLocal;
 import com.solec.api.entity.Proyectos;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -25,8 +26,6 @@ public class PresupuestoBuzonMB implements Serializable {
 
     @EJB
     private ProyectoBeanLocal presupuestoBean;
-    @EJB
-    private CatalogoBeanLocal catalogoBean;
 
     private List<Proyectos> listPresupuesto;
     private String nombre;
@@ -50,6 +49,19 @@ public class PresupuestoBuzonMB implements Serializable {
 
     public void detallePresupuesto(Integer id) {
         JsfUtil.redirectTo("/proyecto/detalle.xhtml?idpresupuesto=" + id);
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        Object value = event.getObject();
+        Proyectos tipo = (Proyectos) value;
+
+        if (tipo != null) {
+            Proyectos tt = presupuestoBean.updateProyecto(tipo);
+            JsfUtil.addSuccessMessage("Se actualizo el proyecto exitosamente");
+            listPresupuesto = presupuestoBean.ListProyectos();
+        } else {
+            JsfUtil.addErrorMessage("Sucedio un error al actualizar el registro");
+        }
     }
 
     /*Metodos getters y setters*/

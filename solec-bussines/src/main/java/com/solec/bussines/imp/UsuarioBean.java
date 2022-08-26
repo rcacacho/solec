@@ -2,6 +2,7 @@ package com.solec.bussines.imp;
 
 import com.solec.api.ejb.UsuarioBeanLocal;
 import com.solec.api.entity.Usuarios;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -58,7 +59,7 @@ public class UsuarioBean implements UsuarioBeanLocal {
     @Override
     public Usuarios saveUsuario(Usuarios usuario) {
         try {
-            //usuario.setFechacreacion(new Date());
+            usuario.setFechacrecion(new Date());
             usuario.setActivo(true);
             em.persist(usuario);
             em.flush();
@@ -112,8 +113,8 @@ public class UsuarioBean implements UsuarioBeanLocal {
             Usuarios toUpdate = em.find(Usuarios.class, usuario.getIdusuario());
 
             toUpdate.setPassword(usuario.getPassword());
-            //toUpdate.setUsuariomodificacion(usuario.getUsuariomodificacion());
-            //toUpdate.setFechamodificacion(new Date());
+            toUpdate.setUsuariomodificacion(usuario.getUsuariomodificacion());
+            toUpdate.setFechamodificacion(new Date());
             em.merge(toUpdate);
 
             return toUpdate;

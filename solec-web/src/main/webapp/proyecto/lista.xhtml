@@ -71,22 +71,46 @@
                              styleClass="tabla-mp" style="width: 95%" rowIndexVar="rowId"
                              rows="15" paginator="#{presupuestoBuzonMB.listPresupuesto.size()>15}"  paginatorPosition="bottom">
 
+                    <p:ajax event="rowEdit" listener="#{presupuestoBuzonMB.onRowEdit}" update="dt_presupuesto" />
+
                     <p:column headerText="No." style="width: 5%;">
                         #{rowId+1}
                     </p:column>
 
                     <p:column headerText="Nombre cliente" width="20%" >
-                        <p:outputLabel value="#{col.nombre}"/>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{col.nombre}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{col.nombre}" size="22" >
+                                    <p:ajax event="blur" process="@this"/>
+                                </p:inputText> 
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
 
                     <p:column headerText="Dirección" width="25%" >
-                        <p:outputLabel value="#{col.direccion}"/>
+                         <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{col.direccion}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{col.direccion}" size="22" >
+                                    <p:ajax event="blur" process="@this"/>
+                                </p:inputText> 
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
 
                     <p:column headerText="Fecha creado" width="12%" >
                         <p:outputLabel value="#{col.fechacreacion}">
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Editar" width="8%">
+                        <p:rowEditor />
                     </p:column>
 
                     <p:column width="12%" exportable="false" >

@@ -1,6 +1,5 @@
 package com.solec.api.ejb;
 
-
 import com.solec.api.entity.Detalleproyecto;
 import com.solec.api.entity.Proyectos;
 import java.util.List;
@@ -20,11 +19,15 @@ public interface ProyectoBeanLocal {
     List<Proyectos> ListProyectoByNombre(String nombre);
 
     Proyectos findProyecto(Integer idpresupuesto);
-    
+
     Detalleproyecto saveDetalleProyecto(Detalleproyecto detallePresupuesto);
-    
+
     List<Detalleproyecto> ListDetalleProyectoByIdPresupuesto(Integer idpresupuesto);
-    
+
     Double finDetalleProyectoSumByIdProyecto(Integer idpresupuesto);
+
+    Detalleproyecto eliminarDetalleProyecto(Integer iddetallepresupuesto, String usuario, String motivo);
+
+    Detalleproyecto updateDetalleProyecto(Detalleproyecto detalle);
 
 }

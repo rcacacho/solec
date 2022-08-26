@@ -72,6 +72,10 @@ public class Proyectos implements Serializable {
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
 
+    @Size(max = 1000)
+    @Column(name = "motivoeliminacion")
+    private String motivoeliminacion;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
@@ -158,6 +162,14 @@ public class Proyectos implements Serializable {
 
     public void setDetalleproyectoList(List<Detalleproyecto> detalleproyectoList) {
         this.detalleproyectoList = detalleproyectoList;
+    }
+
+    public String getMotivoeliminacion() {
+        return motivoeliminacion;
+    }
+
+    public void setMotivoeliminacion(String motivoeliminacion) {
+        this.motivoeliminacion = motivoeliminacion;
     }
 
     @Override

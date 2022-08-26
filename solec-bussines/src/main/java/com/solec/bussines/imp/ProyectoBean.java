@@ -153,7 +153,7 @@ public class ProyectoBean implements ProyectoBeanLocal {
             return null;
         }
 
-        List<Detalleproyecto> lst = em.createQuery("SELECT col FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto order by col.fechacreacion desc ", Detalleproyecto.class)
+        List<Detalleproyecto> lst = em.createQuery("SELECT col FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto and col.activo = true order by col.fechacreacion desc ", Detalleproyecto.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 
@@ -164,7 +164,7 @@ public class ProyectoBean implements ProyectoBeanLocal {
     }
 
     @Override
-    public  Double finDetalleProyectoSumByIdProyecto(Integer idpresupuesto) {
+    public Double finDetalleProyectoSumByIdProyecto(Integer idpresupuesto) {
         if (idpresupuesto == null) {
             return null;
         }
@@ -177,5 +177,51 @@ public class ProyectoBean implements ProyectoBeanLocal {
             return null;
         }
         return lst.get(0);
+    }
+
+    @Override
+    public Detalleproyecto eliminarDetalleProyecto(Integer iddetallepresupuesto, String usuario, String motivo) {
+        if (iddetallepresupuesto == null) {
+            context.setRollbackOnly();
+            return null;
+        }
+
+        try {
+            Detalleproyecto toUpdate = em.find(Detalleproyecto.class, iddetallepresupuesto);
+
+            toUpdate.setActivo(false);
+            toUpdate.setFechaeliminacion(new Date());
+            toUpdate.setUsuarioeliminacion(usuario);
+            toUpdate.setMotivoeliminacion(motivo);
+            em.merge(toUpdate);
+
+            return toUpdate;
+        } catch (ConstraintViolationException ex) {
+            String validationError = getConstraintViolationExceptionAsString(ex);
+            log.error(validationError);
+            context.setRollbackOnly();
+            return null;
+        } catch (Exception ex) {
+            processException(ex);
+            return null;
+        }
+    }
+
+    @Override
+    public Detalleproyecto updateDetalleProyecto(Detalleproyecto detalle) {
+        try {
+            em.merge(detalle);
+            em.flush();
+            return (detalle);
+        } catch (ConstraintViolationException ex) {
+            String validationError = getConstraintViolationExceptionAsString(ex);
+            log.error(validationError);
+            context.setRollbackOnly();
+            return null;
+        } catch (Exception ex) {
+            processException(ex);
+            context.setRollbackOnly();
+            return null;
+        }
     }
 }

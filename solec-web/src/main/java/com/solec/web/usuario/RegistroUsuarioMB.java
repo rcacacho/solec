@@ -59,7 +59,7 @@ public class RegistroUsuarioMB implements Serializable {
     }
 
     public void regresar() {
-        JsfUtil.redirectTo("/usuario/lista.xhtml");
+        JsfUtil.redirectTo("/usuarios/lista.xhtml");
     }
 
     public String md5(String input) {

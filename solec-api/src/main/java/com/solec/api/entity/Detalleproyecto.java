@@ -48,63 +48,87 @@ public class Detalleproyecto implements Serializable {
     @Basic(optional = false)
     @Column(name = "iddetallepresupuesto")
     private Integer iddetallepresupuesto;
-    
+
     @Size(max = 500)
     @Column(name = "descripcion")
     private String descripcion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
-    private int cantidad;
-    
+    private float cantidad;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "valorunitario")
     private float valorunitario;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "total")
     private float total;
-    
+
     @Size(max = 500)
     @Column(name = "directorio")
     private String directorio;
-    
+
     @Size(max = 500)
     @Column(name = "nombrearchivo")
     private String nombrearchivo;
-    
+
     @Size(max = 1000)
     @Column(name = "observacion")
     private String observacion;
-    
+
+    @Size(max = 1000)
+    @Column(name = "motivoeliminacion")
+    private String motivoeliminacion;
+
+    @Size(max = 1000)
+    @Column(name = "motivomodificacion")
+    private String motivomodificacion;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
-    
+
+    @Column(name = "fechamodificacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechamodificacion;
+
+    @Size(min = 1, max = 50)
+    @Column(name = "usuariomodificacion")
+    private String usuariomodificacion;
+
+    @Column(name = "fechaeliminacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaeliminacion;
+
+    @Size(min = 1, max = 50)
+    @Column(name = "usuarioeliminacion")
+    private String usuarioeliminacion;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    
+
     @JoinColumn(name = "idpresupuesto", referencedColumnName = "idpresupuesto")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Proyectos idpresupuesto;
-    
+
     @JoinColumn(name = "idtipocantidad", referencedColumnName = "idtipocantidad")
     @ManyToOne(fetch = FetchType.LAZY)
     private Tipocantidad idtipocantidad;
-    
+
     @JoinColumn(name = "idtipogasto", referencedColumnName = "idtipogasto")
     @ManyToOne(fetch = FetchType.LAZY)
     private Tipogasto idtipogasto;
@@ -142,11 +166,11 @@ public class Detalleproyecto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getCantidad() {
+    public float getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(float cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -262,5 +286,53 @@ public class Detalleproyecto implements Serializable {
     public String toString() {
         return "com.solec.api.entity.Detalleproyecto[ iddetallepresupuesto=" + iddetallepresupuesto + " ]";
     }
-    
+
+    public Date getFechamodificacion() {
+        return fechamodificacion;
+    }
+
+    public void setFechamodificacion(Date fechamodificacion) {
+        this.fechamodificacion = fechamodificacion;
+    }
+
+    public String getUsuariomodificacion() {
+        return usuariomodificacion;
+    }
+
+    public void setUsuariomodificacion(String usuariomodificacion) {
+        this.usuariomodificacion = usuariomodificacion;
+    }
+
+    public Date getFechaeliminacion() {
+        return fechaeliminacion;
+    }
+
+    public void setFechaeliminacion(Date fechaeliminacion) {
+        this.fechaeliminacion = fechaeliminacion;
+    }
+
+    public String getUsuarioeliminacion() {
+        return usuarioeliminacion;
+    }
+
+    public void setUsuarioeliminacion(String usuarioeliminacion) {
+        this.usuarioeliminacion = usuarioeliminacion;
+    }
+
+    public String getMotivoeliminacion() {
+        return motivoeliminacion;
+    }
+
+    public void setMotivoeliminacion(String motivoeliminacion) {
+        this.motivoeliminacion = motivoeliminacion;
+    }
+
+    public String getMotivomodificacion() {
+        return motivomodificacion;
+    }
+
+    public void setMotivomodificacion(String motivomodificacion) {
+        this.motivomodificacion = motivomodificacion;
+    }
+
 }

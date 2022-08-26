@@ -32,6 +32,7 @@ import org.primefaces.model.UploadedFile;
 import com.solec.api.ejb.ProyectoBeanLocal;
 import com.solec.api.entity.Detalleproyecto;
 import com.solec.api.entity.Proyectos;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -65,6 +66,8 @@ public class DetallePresupuestoMB implements Serializable {
     private Tipogasto tipoGasto;
     private Tipocantidad tipoCantidad;
     private UploadedFile archivo;
+    private String motivoEliminacion;
+    private Detalleproyecto detalleSelected;
 
     public DetallePresupuestoMB() {
         detalle = new Detalleproyecto();
@@ -152,11 +155,9 @@ public class DetallePresupuestoMB implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        //String ubicacionArchivo = catalogoBeanLocal.findConfiguracionByParametro(ConfiguracionEnum.CARPETA_ARCHIVOS.getParametro()).getValor();
         String ubicacionArchivo = "\\opt\\image\\";
         String nombreArchivo = event.getFile().getFileName();
-        //archivo.setReferencia(JsfUtil.quitarExtension(nombreArchivo));
-        //nombreArchivo = JsfUtil.armarNombre(nombreArchivo, "BitSol_constancia_" + idSolicitudConstancia);
+
         try {
             FileUtil.guardarArchivo(event.getFile().getInputstream(), nombreArchivo, ubicacionArchivo);
             detalle.setDirectorio(ubicacionArchivo);
@@ -198,6 +199,40 @@ public class DetallePresupuestoMB implements Serializable {
         return FileUtil.getStreamedContent(archivo.getDirectorio(), archivo.getNombrearchivo());
     }
 
+    public void eliminarDetalle() throws IOException {
+        Detalleproyecto response = presupuestoBean.eliminarDetalleProyecto(detalleSelected.getIddetallepresupuesto(), SesionUsuarioMB.getUserName(), motivoEliminacion);
+        if (response != null) {
+            listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
+            JsfUtil.addSuccessMessage("Se elimino el registro exitosamente");
+            return;
+        }
+
+        JsfUtil.addErrorMessage("Sucedio un error al elimnar");
+    }
+
+    public void dialogEliminar(Detalleproyecto det) {
+        RequestContext.getCurrentInstance().execute("PF('dlgPago').show()");
+        motivoEliminacion = null;
+        detalleSelected = det;
+    }
+
+    public void cerrarDialog() {
+        RequestContext.getCurrentInstance().execute("PF('dlgPago').hide()");
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        Object value = event.getObject();
+        Detalleproyecto tipo = (Detalleproyecto) value;
+
+        if (tipo != null) {
+            tipo.setTotal(tipo.getCantidad() * tipo.getValorunitario());
+            Detalleproyecto tt = presupuestoBean.updateDetalleProyecto(tipo);
+            JsfUtil.addSuccessMessage("Se actualizo exitosamente");
+            listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
+        } else {
+            JsfUtil.addErrorMessage("Sucedio un error al actualizar el registro");
+        }
+    }
 
     /*Metodos getters y setters*/
     public Integer getIdpresupuesto() {
@@ -286,6 +321,22 @@ public class DetallePresupuestoMB implements Serializable {
 
     public void setArchivo(UploadedFile archivo) {
         this.archivo = archivo;
+    }
+
+    public String getMotivoEliminacion() {
+        return motivoEliminacion;
+    }
+
+    public void setMotivoEliminacion(String motivoEliminacion) {
+        this.motivoEliminacion = motivoEliminacion;
+    }
+
+    public Detalleproyecto getDetalleSelected() {
+        return detalleSelected;
+    }
+
+    public void setDetalleSelected(Detalleproyecto detalleSelected) {
+        this.detalleSelected = detalleSelected;
     }
 
 }

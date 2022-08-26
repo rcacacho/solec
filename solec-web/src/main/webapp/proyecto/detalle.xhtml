@@ -172,6 +172,7 @@
                                   maxlength="1000" 
                                   style="width: 910px!important;height: 60px!important;"
                                   counter="ot_car_ita_asunto2" counterTemplate="Tienes {0} caracteres restantes">
+                    <p:ajax event="blur" process="@this"/>
                 </p:inputTextarea>
                 <p:outputLabel id="ot_car_ita_asunto2" style="float: right; margin-right: 50px;"/>
             </p:panelGrid>
@@ -188,33 +189,71 @@
                 </p:commandButton>
             </p:panelGrid>
 
-
             <p:dataTable id="dt_detalle" var="col" value="#{detallePresupuestoMB.listDetalle}"
                          emptyMessage="No hay presupuestos registrados" editable="true" 
                          styleClass="tabla-mp" style="width: 95%" rowIndexVar="rowId"
                          rows="15" paginator="#{detallePresupuestoMB.listDetalle.size()>15}"  paginatorPosition="bottom"
                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
 
+                <p:ajax event="rowEdit" listener="#{detallePresupuestoMB.onRowEdit}" update="dt_detalle" />
+
                 <p:column headerText="No." style="width: 5%;">
                     #{rowId+1}
                 </p:column>
 
                 <p:column headerText="Tipo Cantidad" width="20%" >
-                    <p:outputLabel value="#{col.idtipocantidad.nombres}"/>
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{col.idtipocantidad.nombres}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{col.idtipocantidad}" style="width:50px;" 
+                                             converter="entityConverter" filter="true" filterMatchMode="contains">
+                                <p:ajax event="itemSelect"/>
+                                <f:selectItem itemLabel="(selecciona una unidad)" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{detallePresupuestoMB.listTipoCantidad}"  var="rut" itemLabel="#{rut.nombres}" itemValue="#{rut}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column headerText="Descripción" width="25%" >
-                    <p:outputLabel value="#{col.descripcion}"/>
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{col.descripcion}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{col.descripcion}" size="10" >
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText> 
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Cantidad" width="10%" >
-                    <p:outputLabel value="#{col.cantidad}"/>
+                <p:column headerText="Cantidad" width="14%" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{col.cantidad}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{col.cantidad}" size="8" >
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText> 
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Valor unitario" width="10%" >
-                    <p:outputLabel value="#{col.valorunitario}">
-                        <f:convertNumber groupingUsed="true" minFractionDigits="2" />
-                    </p:outputLabel>
+                <p:column headerText="Valor unitario" width="13%" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{col.valorunitario}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{col.valorunitario}" size="8" >
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText> 
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column headerText="Total" width="12%" >
@@ -223,8 +262,17 @@
                     </p:outputLabel>
                 </p:column>
 
-                <p:column headerText="Observación" width="20%" >
-                    <p:outputLabel value="#{col.observacion}"/>
+                <p:column headerText="Observación" width="15%" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{col.observacion}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{col.observacion}" size="12" >
+                                <p:ajax event="blur" process="@this"/>
+                            </p:inputText> 
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column headerText="Archivos" style="width: 15%;">
@@ -240,6 +288,17 @@
                     <p:outputLabel value="#{col.fechacreacion}">
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </p:outputLabel>
+                </p:column>
+
+                <p:column width="10%" exportable="false" >
+                    <p:commandButton value="Eliminar" 
+                                     style="float:left!important; margin-left:7.5% !important;" process="@this" 
+                                     styleClass="button-16 b-greylight-16" icon="ui-icon-closethick"
+                                     action="#{detallePresupuestoMB.dialogEliminar(col)}" update="@form"/>
+                </p:column>
+
+                <p:column headerText="Editar" width="8%">
+                    <p:rowEditor />
                 </p:column>
             </p:dataTable>
 
@@ -260,19 +319,20 @@
                 </p:panelGrid>
             </p:dialog>
 
-            <p:dialog header="Registro Valor" widgetVar="dlgValor" id="dlgValor" 
-                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="450px">
-                <p:panelGrid id="pgProve" columns="1" styleClass="no-border" style="width: 100%;"  >
-                    <p:outputLabel value="Nombre:" styleClass="colorTitulo" style="font-weight: bold;" />
-                    <p:inputText value="#{detallePresupuestoMB.tipoGasto.nombregasto}" size="50" style="font-size: 16px!important;"
-                                 required="true" requiredMessage="Debes ingresar un nombre">
-                        <p:ajax event="blur" process="@this"/>
-                    </p:inputText>
+            <p:dialog header="Eliminar pago" widgetVar="dlgPago" id="dlgPago" 
+                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="550px">
+                <p:panelGrid id="pgCorte" columns="1" styleClass="no-border" style="width: 100%;"  >
+                    <p:outputLabel value="Motivo eliminación:" styleClass="colorTitulo" style="font-weight: bold;" />
+                    <p:inputTextarea rows="2" cols="90" value="#{detallePresupuestoMB.motivoEliminacion}" counter="display" maxlength="1000" 
+                                     counterTemplate="{0} caracteres pendientes." autoResize="false">
+                        <p:ajax event="blur" process="@this" />
+                    </p:inputTextarea>
+                    <h:outputText id="display" style="margin-left: 330px;" /> 
 
                     <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >
-                        <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveValor()}" icon="ui-icon-disk" process="pgProve"  
-                                         style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar el valor?');" update="@form"/>
-                        <p:commandButton value="Cancelar" process="@this" action="#{detallePresupuestoMB.cerrarDialogValor()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
+                        <p:commandButton value="Guardar" action="#{detallePresupuestoMB.eliminarDetalle()}" icon="ui-icon-disk" process="pgCorte"  
+                                         style=" margin-left: 5px; " onstart="return confirm('¿Confirmas eliminar el registro?');" update="@form"/>
+                        <p:commandButton value="Cancelar" process="@this" action="#{detallePresupuestoMB.cerrarDialog()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
                     </p:outputPanel>
                 </p:panelGrid>
             </p:dialog>

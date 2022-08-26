@@ -18,41 +18,40 @@
 	<parameter name="ID_PRESUPUESTO" class="java.lang.Integer"/>
 	<parameter name="TOTAL" class="java.lang.Double"/>
 	<queryString>
-		<![CDATA[select d.descripcion, t.nombres unidad, t2.nombregasto material, cantidad, valorunitario precio, d.total   
-from detallepresupuesto d 
+		<![CDATA[select d.descripcion, t.nombres unidad, cantidad, valorunitario precio, d.total, d.observacion     
+from detalleproyecto d
 join tipocantidad t on t.idtipocantidad = d.idtipocantidad and t.activo = 1
-join tipogasto t2 on t2.idtipogasto = d.idtipogasto and t2.idtipogasto = 1
 where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 	</queryString>
 	<field name="descripcion" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
 		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detallepresupuesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleproyecto"/>
 	</field>
 	<field name="unidad" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="nombres"/>
 		<property name="com.jaspersoft.studio.field.label" value="unidad"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="tipocantidad"/>
 	</field>
-	<field name="material" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="nombregasto"/>
-		<property name="com.jaspersoft.studio.field.label" value="material"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="tipogasto"/>
-	</field>
-	<field name="cantidad" class="java.lang.Integer">
+	<field name="cantidad" class="java.lang.Float">
 		<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
 		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detallepresupuesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleproyecto"/>
 	</field>
 	<field name="precio" class="java.lang.Float">
 		<property name="com.jaspersoft.studio.field.name" value="valorunitario"/>
 		<property name="com.jaspersoft.studio.field.label" value="precio"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detallepresupuesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleproyecto"/>
 	</field>
 	<field name="total" class="java.lang.Float">
 		<property name="com.jaspersoft.studio.field.name" value="total"/>
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="detallepresupuesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleproyecto"/>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="observacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="observacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalleproyecto"/>
 	</field>
 	<variable name="NO_FILA" class="java.lang.Integer">
 		<variableExpression><![CDATA[$V{NO_FILA}+1]]></variableExpression>
@@ -113,7 +112,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<text><![CDATA[DESCRIPCIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="636" y="0" width="101" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="fc926172-e4e5-4fdb-92ab-9e687c065740">
+				<reportElement mode="Opaque" x="503" y="0" width="101" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="fc926172-e4e5-4fdb-92ab-9e687c065740">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -131,7 +130,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="737" y="0" width="116" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="2c763973-751e-4e3c-9199-6cc57365521c">
+				<reportElement mode="Opaque" x="604" y="0" width="116" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="2c763973-751e-4e3c-9199-6cc57365521c">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -149,7 +148,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<text><![CDATA[PRECIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="485" y="0" width="151" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="13b5adc3-4818-4c85-a146-e7ae0c190be1">
+				<reportElement mode="Opaque" x="836" y="0" width="164" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="13b5adc3-4818-4c85-a146-e7ae0c190be1">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -164,10 +163,10 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[MATERIAL]]></text>
+				<text><![CDATA[OBSERVACIONES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="853" y="0" width="116" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="2bed54dc-c4fc-45e0-9194-b2007674635e">
+				<reportElement mode="Opaque" x="720" y="0" width="116" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="2bed54dc-c4fc-45e0-9194-b2007674635e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -203,7 +202,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<text><![CDATA[NO.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="352" y="0" width="133" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="e9b1f68a-c252-4a32-927d-a85ad070f33d">
+				<reportElement mode="Opaque" x="352" y="0" width="151" height="19" forecolor="#FFFFFF" backcolor="#345AC2" uuid="e9b1f68a-c252-4a32-927d-a85ad070f33d">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -225,7 +224,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 	<detail>
 		<band height="24" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="969" height="19" backcolor="#D9DBDB" uuid="a70f87bc-7e17-41ac-a0ba-e4cbad50127c">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="1000" height="19" backcolor="#D9DBDB" uuid="a70f87bc-7e17-41ac-a0ba-e4cbad50127c">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[new Boolean( $V{PAGE_COUNT}.intValue() % 2 ==0 )]]></printWhenExpression>
@@ -248,7 +247,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="352" y="0" width="133" height="19" uuid="cead320e-9264-4984-b9c2-056c14db6896">
+				<reportElement x="352" y="0" width="151" height="19" uuid="cead320e-9264-4984-b9c2-056c14db6896">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -259,7 +258,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="485" y="0" width="151" height="19" uuid="2b5cc688-7a72-430b-ba7d-c6c2878601d5">
+				<reportElement x="836" y="0" width="164" height="19" uuid="2b5cc688-7a72-430b-ba7d-c6c2878601d5">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -267,7 +266,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{material}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="60" height="19" uuid="d8af867e-25d9-48f4-b3ee-9b51a659aca2">
@@ -283,7 +282,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<textFieldExpression><![CDATA[$V{NO_FILA}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="636" y="0" width="101" height="19" uuid="18eb9794-a016-47da-a932-b00eb590ba98">
+				<reportElement x="503" y="0" width="101" height="19" uuid="18eb9794-a016-47da-a932-b00eb590ba98">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -294,7 +293,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="853" y="0" width="116" height="19" uuid="d019522f-a629-4aed-98aa-ec1b018bb0aa">
+				<reportElement x="720" y="0" width="116" height="19" uuid="d019522f-a629-4aed-98aa-ec1b018bb0aa">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -305,7 +304,7 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="737" y="0" width="116" height="19" uuid="e8efccb8-51a5-4406-b966-7b3643ff4f18">
+				<reportElement x="604" y="0" width="116" height="19" uuid="e8efccb8-51a5-4406-b966-7b3643ff4f18">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>

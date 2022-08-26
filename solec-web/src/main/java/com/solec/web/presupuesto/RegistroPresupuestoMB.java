@@ -42,6 +42,7 @@ public class RegistroPresupuestoMB implements Serializable {
             presupuesto = null;
             return;
         }
+        JsfUtil.redirectTo("/proyecto/lista.xhtml");
     }
 
     /*Metodos getters y setters*/

@@ -42,43 +42,59 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "idusuario")
     private Integer idusuario;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "nombres")
     private String nombres;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "apellidos")
     private String apellidos;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuario")
     private String usuario;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "password")
     private String password;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacrecion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacrecion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
-    
+
+    @Column(name = "fechamodificacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechamodificacion;
+
+    @Size(min = 1, max = 50)
+    @Column(name = "usuariomodificacion")
+    private String usuariomodificacion;
+
+    @Column(name = "fechaeliminacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaeliminacion;
+
+    @Size(min = 1, max = 50)
+    @Column(name = "usuarioeliminacion")
+    private String usuarioeliminacion;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
@@ -190,5 +206,37 @@ public class Usuarios implements Serializable {
     public String toString() {
         return "com.solec.api.entity.Usuarios[ idusuario=" + idusuario + " ]";
     }
-    
+
+    public Date getFechamodificacion() {
+        return fechamodificacion;
+    }
+
+    public void setFechamodificacion(Date fechamodificacion) {
+        this.fechamodificacion = fechamodificacion;
+    }
+
+    public String getUsuariomodificacion() {
+        return usuariomodificacion;
+    }
+
+    public void setUsuariomodificacion(String usuariomodificacion) {
+        this.usuariomodificacion = usuariomodificacion;
+    }
+
+    public Date getFechaeliminacion() {
+        return fechaeliminacion;
+    }
+
+    public void setFechaeliminacion(Date fechaeliminacion) {
+        this.fechaeliminacion = fechaeliminacion;
+    }
+
+    public String getUsuarioeliminacion() {
+        return usuarioeliminacion;
+    }
+
+    public void setUsuarioeliminacion(String usuarioeliminacion) {
+        this.usuarioeliminacion = usuarioeliminacion;
+    }
+
 }
