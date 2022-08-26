@@ -76,6 +76,10 @@ public class Detalleproyecto implements Serializable {
     @Column(name = "nombrearchivo")
     private String nombrearchivo;
 
+    @Size(max = 500)
+    @Column(name = "referencianombre")
+    private String referencianombre;
+
     @Size(max = 1000)
     @Column(name = "observacion")
     private String observacion;
@@ -260,6 +264,14 @@ public class Detalleproyecto implements Serializable {
 
     public void setIdtipogasto(Tipogasto idtipogasto) {
         this.idtipogasto = idtipogasto;
+    }
+
+    public String getReferencianombre() {
+        return referencianombre;
+    }
+
+    public void setReferencianombre(String referencianombre) {
+        this.referencianombre = referencianombre;
     }
 
     @Override

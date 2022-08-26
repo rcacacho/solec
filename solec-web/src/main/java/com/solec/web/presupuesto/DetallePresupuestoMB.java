@@ -32,6 +32,8 @@ import org.primefaces.model.UploadedFile;
 import com.solec.api.ejb.ProyectoBeanLocal;
 import com.solec.api.entity.Detalleproyecto;
 import com.solec.api.entity.Proyectos;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -157,11 +159,14 @@ public class DetallePresupuestoMB implements Serializable {
     public void handleFileUpload(FileUploadEvent event) {
         String ubicacionArchivo = "\\opt\\image\\";
         String nombreArchivo = event.getFile().getFileName();
+        detalle.setReferencianombre(JsfUtil.quitarExtension(nombreArchivo));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+         String nombreArchivo2 = nombreArchivo + "_" + sdf.format(new Date());
 
         try {
             FileUtil.guardarArchivo(event.getFile().getInputstream(), nombreArchivo, ubicacionArchivo);
             detalle.setDirectorio(ubicacionArchivo);
-            detalle.setNombrearchivo(nombreArchivo);
+            detalle.setNombrearchivo(nombreArchivo2);
             JsfUtil.addSuccessMessage("Archivo cargado exitosamente");
         } catch (IOException ioe) {
             log.error(ioe.getLocalizedMessage());
