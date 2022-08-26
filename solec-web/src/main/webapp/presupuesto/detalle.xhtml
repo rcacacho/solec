@@ -14,7 +14,7 @@
     </f:metadata>
 
     <ui:define name="pageTitle">
-        Detalle presupuesto
+        Detalle del Proyecto
     </ui:define>
 
     <ui:define name="content">
@@ -169,7 +169,8 @@
                                       dragDropSupport="false"  
                                       sizeLimit="10240000"  allowTypes="/(\.|\/)(pdf|png|jpe?g|gif)$/"                        
                                       update="@all" process="@this"
-                                      fileLimit="1" label="Adjuntar..." uploadLabel="Cargar" cancelLabel="Cancelar" invalidSizeMessage="El tamaño del archivo supera el límite permitido"
+                                      fileLimit="1" label="Adjuntar..." uploadLabel="Cargar" cancelLabel="Cancelar" 
+                                      invalidSizeMessage="El tamaño del archivo supera el límite permitido"
                                       invalidFileMessage="El formato del archivo no está permitido" fileLimitMessage="Únicamente es posible cargar un archivo por cada solicitud"
                                       styleClass="no-header" style="font-size: 13px !important; vertical-align: top; ">   
                         </p:fileUpload>
@@ -199,7 +200,8 @@
             <p:dataTable id="dt_detalle" var="col" value="#{detallePresupuestoMB.listDetalle}"
                          emptyMessage="No hay presupuestos registrados" editable="true" 
                          styleClass="tabla-mp" style="width: 95%" rowIndexVar="rowId"
-                         rows="15" paginator="#{detallePresupuestoMB.listDetalle.size()>15}"  paginatorPosition="bottom">
+                         rows="15" paginator="#{detallePresupuestoMB.listDetalle.size()>15}"  paginatorPosition="bottom"
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
 
                 <p:column headerText="No." style="width: 5%;">
                     #{rowId+1}

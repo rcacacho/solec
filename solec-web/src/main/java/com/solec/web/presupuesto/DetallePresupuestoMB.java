@@ -109,6 +109,7 @@ public class DetallePresupuestoMB implements Serializable {
         presupuesto.setTotalpresupuesto(total);
         Presupuesto pp = presupuestoBean.updatePresupuesto(presupuesto);
         detalle = null;
+        listDetalle = presupuestoBean.ListDetallePresupuestoByIdPresupuesto(idpresupuesto);
     }
 
     public void cargarDialogValor() {
@@ -151,7 +152,7 @@ public class DetallePresupuestoMB implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) {
         //String ubicacionArchivo = catalogoBeanLocal.findConfiguracionByParametro(ConfiguracionEnum.CARPETA_ARCHIVOS.getParametro()).getValor();
-        String ubicacionArchivo = "C:\\data";
+        String ubicacionArchivo = "\\opt\\image\\";
         String nombreArchivo = event.getFile().getFileName();
         //archivo.setReferencia(JsfUtil.quitarExtension(nombreArchivo));
         //nombreArchivo = JsfUtil.armarNombre(nombreArchivo, "BitSol_constancia_" + idSolicitudConstancia);
