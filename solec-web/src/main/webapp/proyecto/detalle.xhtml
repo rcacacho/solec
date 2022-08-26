@@ -275,8 +275,8 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Archivos" style="width: 15%;">
-                    <p:commandLink value="#{col.nombrearchivo}" 
+                <p:column headerText="Archivos" style="width: 18%;">
+                    <p:commandLink value="#{col.referencianombre}" 
                                    style="font-size: 13px!important; text-align: center !important;"
                                    onclick="PrimeFaces.monitorDownload(start, stop);"
                                    title="Descargar" ajax="false" immediate="true">
@@ -290,11 +290,15 @@
                     </p:outputLabel>
                 </p:column>
 
-                <p:column width="10%" exportable="false" >
+                <p:column width="13%" exportable="false" >
                     <p:commandButton value="Eliminar" 
                                      style="float:left!important; margin-left:7.5% !important;" process="@this" 
                                      styleClass="button-16 b-greylight-16" icon="ui-icon-closethick"
                                      action="#{detallePresupuestoMB.dialogEliminar(col)}" update="@form"/>
+                    <p:commandButton value="Actualizar imagen" 
+                                     style="margin-top: 3px;" process="@this" 
+                                     styleClass="button-16 b-greylight-16" icon="ui-icon-image"
+                                     action="#{detallePresupuestoMB.dialogImagen(col)}" update="@form"/>
                 </p:column>
 
                 <p:column headerText="Editar" width="8%">
@@ -334,6 +338,21 @@
                                          style=" margin-left: 5px; " onstart="return confirm('¿Confirmas eliminar el registro?');" update="@form"/>
                         <p:commandButton value="Cancelar" process="@this" action="#{detallePresupuestoMB.cerrarDialog()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
                     </p:outputPanel>
+                </p:panelGrid>
+            </p:dialog>
+
+            <p:dialog header="Cargar archivo" widgetVar="dlgArchivo" id="dlgArchivo" 
+                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="550px">
+                <p:panelGrid id="pgArchivo" columns="1" styleClass="no-border" style="width: 100%;"  >
+                    <p:fileUpload id="fu_file2" fileUploadListener="#{detallePresupuestoMB.handleFileUploadActualizacion}" mode="advanced" auto="true"   
+                                  dragDropSupport="false"  
+                                  sizeLimit="10240000"  allowTypes="/(\.|\/)(pdf|png|jpe?g|gif)$/"                        
+                                  update="@all" process="@this"
+                                  fileLimit="1" label="Adjuntar..." uploadLabel="Cargar" cancelLabel="Cancelar" 
+                                  invalidSizeMessage="El tamaño del archivo supera el límite permitido"
+                                  invalidFileMessage="El formato del archivo no está permitido" fileLimitMessage="Únicamente es posible cargar un archivo por cada solicitud"
+                                  styleClass="no-header" style="font-size: 13px !important; vertical-align: top; ">   
+                    </p:fileUpload>
                 </p:panelGrid>
             </p:dialog>
         </h:form>

@@ -70,6 +70,7 @@ public class DetallePresupuestoMB implements Serializable {
     private UploadedFile archivo;
     private String motivoEliminacion;
     private Detalleproyecto detalleSelected;
+    private Detalleproyecto detalleSelectedImagen;
 
     public DetallePresupuestoMB() {
         detalle = new Detalleproyecto();
@@ -161,7 +162,7 @@ public class DetallePresupuestoMB implements Serializable {
         String nombreArchivo = event.getFile().getFileName();
         detalle.setReferencianombre(JsfUtil.quitarExtension(nombreArchivo));
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-         String nombreArchivo2 = nombreArchivo + "_" + sdf.format(new Date());
+        String nombreArchivo2 = nombreArchivo + "_" + sdf.format(new Date());
 
         try {
             FileUtil.guardarArchivo(event.getFile().getInputstream(), nombreArchivo, ubicacionArchivo);
@@ -236,6 +237,31 @@ public class DetallePresupuestoMB implements Serializable {
             listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
         } else {
             JsfUtil.addErrorMessage("Sucedio un error al actualizar el registro");
+        }
+    }
+
+    public void dialogImagen(Detalleproyecto det) {
+        RequestContext.getCurrentInstance().execute("PF('dlgArchivo').show()");
+        motivoEliminacion = null;
+        detalleSelectedImagen = det;
+    }
+    
+        public void handleFileUploadActualizacion(FileUploadEvent event) {
+        String ubicacionArchivo = "\\opt\\image\\";
+        String nombreArchivo = event.getFile().getFileName();
+        detalleSelectedImagen.setReferencianombre(JsfUtil.quitarExtension(nombreArchivo));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String nombreArchivo2 = nombreArchivo + "_" + sdf.format(new Date());
+
+        try {
+            FileUtil.guardarArchivo(event.getFile().getInputstream(), nombreArchivo, ubicacionArchivo);
+            detalleSelectedImagen.setDirectorio(ubicacionArchivo);
+            detalleSelectedImagen.setNombrearchivo(nombreArchivo2);
+            Detalleproyecto de = presupuestoBean.updateDetalleProyecto(detalleSelectedImagen);
+            JsfUtil.addSuccessMessage("Archivo cargado exitosamente");
+        } catch (IOException ioe) {
+            log.error(ioe.getLocalizedMessage());
+            JsfUtil.addErrorMessage("Error al cargar el archivo");
         }
     }
 
