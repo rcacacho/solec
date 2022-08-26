@@ -1,6 +1,7 @@
 package com.solec.bussines.imp;
 
 import com.solec.api.ejb.CatalogoBeanLocal;
+import com.solec.api.entity.Configuracion;
 import com.solec.api.entity.Tipocantidad;
 import com.solec.api.entity.Tipogasto;
 import java.util.List;
@@ -66,6 +67,19 @@ public class CatalogoBean implements CatalogoBeanLocal {
         }
 
         return lst;
+    }
+
+    @Override
+    public Configuracion findConfiguracionByParametro(String parametro) {
+             List<Configuracion> lst = em.createQuery("SELECT qj FROM Configuracion qj where qj.activo = true and qj.parametro =:parametro ", Configuracion.class)
+                       .setParameter("parametro", parametro)
+                .getResultList();
+
+        if (lst == null || lst.isEmpty()) {
+            return null;
+        }
+
+        return lst.get(0);
     }
 
 }

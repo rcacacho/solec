@@ -115,4 +115,15 @@ public class JsfUtil {
         }
     }
 
+    public static String quitarExtension(String nombreOrigen) {
+        int index = 0;
+        for (int i = (nombreOrigen.length() - 1); i > -1; i--) {
+            if (nombreOrigen.charAt(i) == '.') {
+                index = i;
+                break;
+            }
+        }
+        return nombreOrigen.substring(0, index);
+    }
+
 }

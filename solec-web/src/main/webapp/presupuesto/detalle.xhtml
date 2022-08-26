@@ -89,68 +89,111 @@
 
             <hr class="hr-mp" style="margin-bottom: 10px!important;"/>
 
+            <p:panelGrid  id="pg_info2" styleClass="no-border" style="width: 100%; margin-left: 4%;">
+                <p:row>
+                    <p:column >
+                        <p:outputLabel value="Unidad:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Valor:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
+                    </p:column>
+                </p:row>
 
-            <p:panelGrid id="pg_in" columns="2" styleClass="no-border" style="width: 100%;">
-                <p:outputLabel value="Descripción:" styleClass="colorTitulo" />
-                <p:outputLabel value="Unidad:" styleClass="colorTitulo" />
+                <p:row>
+                    <p:column>
+                        <p:selectOneMenu id="gas" value="#{detallePresupuestoMB.tipoCantidadSelected}" style="width: 150px;" 
+                                         converter="entityConverter" filter="true" filterMatchMode="contains">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItem itemLabel="(selecciona una unidad)" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{detallePresupuestoMB.listTipoCantidad}"  var="rut" itemLabel="#{rut.nombres}" itemValue="#{rut}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Agregar" action="#{detallePresupuestoMB.cargarDialogUnidad()}" icon="ui-icon-plus"
+                                         style=" margin-left: 5px; "  update="dlgUnidad" process="@this"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="ca" value="#{detallePresupuestoMB.tipoGastoSelected}" style="width: 150px;" 
+                                         converter="entityConverter" filter="true" filterMatchMode="contains">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItem itemLabel="(selecciona un tipo de valor)" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{detallePresupuestoMB.listTipoGasto}"  var="rut" itemLabel="#{rut.nombregasto}" itemValue="#{rut}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Agregar" action="#{detallePresupuestoMB.cargarDialogValor()}" icon="ui-icon-plus"
+                                         style=" margin-left: 5px; "  update="dlgValor" process="@this"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText  value="#{detallePresupuestoMB.detalle.descripcion}" style="width: 300px;"  
+                                      placeholder="Ingrese la descripción" required="true" requiredMessage="Debes ingresar una descripción" >
+                            <p:ajax event="blur" process="@this"/>
+                        </p:inputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column >
+                        <p:outputLabel value="Cantidad:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Valor unitario:" styleClass="colorTitulo" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Total:" styleClass="colorTitulo" />
+                    </p:column>
+                </p:row>
 
+                <p:row>
+                    <p:column>
+                        <p:inputText  value="#{detallePresupuestoMB.detalle.cantidad}" style="width: 250px;"  
+                                      placeholder="Ingrese una cantidad" required="true" requiredMessage="Debes ingresar una cantidad" >
+                            <p:ajax event="blur" process="@this"/>
+                        </p:inputText>
+                    </p:column>
+                    <p:column>
+                        <p:inputText  value="#{detallePresupuestoMB.detalle.valorunitario}" style="width: 250px;"  
+                                      placeholder="Ingrese un valor unitario" required="true" requiredMessage="Debes ingresar un valor unitario" >
+                            <p:ajax event="blur" process="@this" listener="#{detallePresupuestoMB.calcularTotal()}" update="total" />
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:inputText>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{detallePresupuestoMB.detalle.total}" id="total" >
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel>
+                    </p:column>
+                </p:row>
 
-                <p:inputText  value="#{detallePresupuestoMB.detalle.descripcion}" style="width: 280px;"  
-                              placeholder="Ingrese la descripción" required="true" requiredMessage="Debes ingresar una descripción" >
-                    <p:ajax event="blur" process="@this"/>
-                </p:inputText>
+                <p:row>
+                    <p:column>
+                        <p:fileUpload id="fu_file" fileUploadListener="#{detallePresupuestoMB.upload}" mode="advanced" auto="true"   
+                                      dragDropSupport="false"  
+                                      sizeLimit="10240000"  sizeLimit=""  allowTypes="/(\.|\/)(pdf|png|jpe?g|gif)$/"                        
+                                      update="@all" process="@this"
+                                      fileLimit="1" label="Adjuntar..." uploadLabel="Cargar" cancelLabel="Cancelar" invalidSizeMessage="El tamaño del archivo supera el límite permitido"
+                                      invalidFileMessage="El formato del archivo no está permitido" fileLimitMessage="Únicamente es posible cargar un archivo por cada solicitud"
+                                      styleClass="no-header" style="font-size: 13px !important; vertical-align: top; ">   
+                        </p:fileUpload>
+                    </p:column>
+                </p:row>
 
-                <p:panelGrid  columns="2" styleClass="no-border" >
-                    <p:selectOneMenu id="gas" value="#{detallePresupuestoMB.tipoCantidadSelected}" style="width: 150px;" 
-                                     converter="entityConverter" filter="true" filterMatchMode="contains">
-                        <p:ajax event="itemSelect"/>
-                        <f:selectItem itemLabel="(selecciona una unidad)" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{detallePresupuestoMB.listTipoCantidad}"  var="rut" itemLabel="#{rut.nombres}" itemValue="#{rut}"/>
-                    </p:selectOneMenu>
-                    <p:commandButton value="Agregar" action="#{detallePresupuestoMB.cargarDialogUnidad()}" icon="ui-icon-plus"
-                                     style=" margin-left: 5px; "  update="dlgUnidad" process="@this"/>
-                </p:panelGrid>
-            </p:panelGrid>
-
-            <p:panelGrid  id="pg_info2" columns="2" styleClass="no-border" style="width: 100%; ">
-                <p:outputLabel value="Cantidad:" styleClass="colorTitulo" />
-                <p:outputLabel value="Valor unitario:" styleClass="colorTitulo" />
-
-                <p:inputText  value="#{detallePresupuestoMB.detalle.cantidad}" style="width: 250px;"  
-                              placeholder="Ingrese una cantidad" required="true" requiredMessage="Debes ingresar una cantidad" >
-                    <p:ajax event="blur" process="@this"/>
-                </p:inputText>
-
-                <p:inputText  value="#{detallePresupuestoMB.detalle.valorunitario}" style="width: 250px;"  
-                              placeholder="Ingrese un valor unitario" required="true" requiredMessage="Debes ingresar un valor unitario" >
-                    <p:ajax event="blur" process="@this" listener="#{detallePresupuestoMB.calcularTotal()}" update="total" />
-                    <f:convertNumber groupingUsed="true" minFractionDigits="2" />
-                </p:inputText>
-
-                <p:panelGrid  id="pg_int" columns="1" styleClass="no-border" style="width: 100%; ">
-                    <p:outputLabel value="Total:" styleClass="colorTitulo" />
-                    <p:outputLabel value="#{detallePresupuestoMB.detalle.total}" id="total" >
-                        <f:convertNumber groupingUsed="true" minFractionDigits="2" />
-                    </p:outputLabel>
-                </p:panelGrid>
-            </p:panelGrid>
-
-            <p:panelGrid  id="pg_obs" columns="1" styleClass="no-border" style="width: 100%; ">
-                <p:outputLabel value="Observaciones:" styleClass="colorTitulo" />
-                <p:inputTextarea rows="5" cols="120" counter="display" maxlength="2000"
-                                 counterTemplate="{0} caracteres pendientes." autoResize="false"/>
-                <h:outputText id="display" class="block" />
-            </p:panelGrid>
-
-            <p:panelGrid  id="pg_guardar" columns="2" styleClass="no-border" style="width: 50%; margin-left: 4%;">
-                <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@form"  
-                                 style=" margin-left: 5px; " update="@form"/>
-                <p:commandButton value="Imprimir" style="float: left;"
-                                 styleClass="button-16 b-greylight-16" icon="ui-icon-print"
-                                 onclick="PrimeFaces.monitorDownload(start, stop);" 
-                                 immediate="true" process="@this" update="@form" ajax="false">
-                    <p:fileDownload value="#{detallePresupuestoMB.generarPdf()}"/>
-                </p:commandButton> 
+                <p:row>
+                    <p:column>
+                        <p:outputPanel  style="margin-top: 7%; margin-bottom: 20px; margin-right: 6%; margin-left: 100%;  font-size: 14px;"  >
+                            <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@form"  
+                                             style=" margin-left: 5px; " update="@form"/>
+                        </p:outputPanel>
+                    </p:column>
+                    <p:column>
+                        <p:outputPanel  style=" margin-bottom: 5px; margin-right: 6%; margin-left: 30%;  font-size: 14px;"  >
+                            <p:commandButton value="Imprimir" style="float: left;"
+                                             styleClass="button-16 b-greylight-16" icon="ui-icon-print"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);" 
+                                             immediate="true" process="@this" update="@form" ajax="false">
+                                <p:fileDownload value="#{detallePresupuestoMB.generarPdf()}"/>
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
 
             <p:dataTable id="dt_detalle" var="col" value="#{detallePresupuestoMB.listDetalle}"
@@ -188,6 +231,15 @@
                     <p:outputLabel value="#{col.total}">
                         <f:convertNumber groupingUsed="true" minFractionDigits="2" />
                     </p:outputLabel>
+                </p:column>
+
+                <p:column headerText="Archivos" style="width: 15%;">
+                    <h:commandLink value="#{col.nombrearchivo}" 
+                                   style="font-size: 13px!important; text-align: center !important;"
+                                   onclick="PrimeFaces.monitorDownload(start, stop);"
+                                   title="Descargar" >
+                        <p:fileDownload value="#{bitacoraConstanciaMB.downloadFile(col)}"/>
+                    </h:commandLink>
                 </p:column>
 
                 <p:column headerText="Fecha creado" width="12%" >

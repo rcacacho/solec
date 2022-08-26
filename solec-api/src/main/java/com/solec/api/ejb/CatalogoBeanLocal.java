@@ -1,5 +1,6 @@
 package com.solec.api.ejb;
 
+import com.solec.api.entity.Configuracion;
 import com.solec.api.entity.Tipocantidad;
 import com.solec.api.entity.Tipogasto;
 import java.util.List;
@@ -15,5 +16,7 @@ public interface CatalogoBeanLocal {
     List<Tipocantidad> ListTipoCantidad();
 
     List<Tipogasto> ListTipoGasto();
+
+    Configuracion findConfiguracionByParametro(String parametro);
 
 }

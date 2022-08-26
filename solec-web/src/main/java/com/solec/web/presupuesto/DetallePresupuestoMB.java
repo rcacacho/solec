@@ -8,6 +8,8 @@ import com.solec.api.entity.Detallepresupuesto;
 import com.solec.api.entity.Presupuesto;
 import com.solec.api.entity.Tipocantidad;
 import com.solec.api.entity.Tipogasto;
+import com.solec.api.enums.ConfiguracionEnum;
+import com.solec.web.utils.FileUtil;
 import com.solec.web.utils.JasperUtil;
 import com.solec.web.utils.JsfUtil;
 import com.solec.web.utils.ReporteJasper;
@@ -20,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -147,18 +148,20 @@ public class DetallePresupuestoMB implements Serializable {
         listTipoGasto = catalogoBeanLocal.ListTipoGasto();
     }
 
-    public void upload(FileUploadEvent event) {
-        UploadedFile uf = event.getFile();
-        String fileName = uf.getFileName();
-        String contentType = uf.getContentType();
-        byte[] contents = uf.getContents(); // Or getInputStream()
-//        Multimedia image=super.getSelected();
-//        image.setFileBlob(contents);
-//        image.setFilename(fileName);
-//        image.setContentType(contentType);
-//        super.setSelected(image);
-        FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Your Photo (File Name " + fileName + " with size " + uf.getSize() + ")  Uploaded Successfully", ""));
+    public void handleFileUpload(FileUploadEvent event) {
+        String ubicacionArchivo = catalogoBeanLocal.findConfiguracionByParametro(ConfiguracionEnum.CARPETA_ARCHIVOS.getParametro()).getValor();
+        String nombreArchivo = event.getFile().getFileName();
+        //archivo.setReferencia(JsfUtil.quitarExtension(nombreArchivo));
+        //nombreArchivo = JsfUtil.armarNombre(nombreArchivo, "BitSol_constancia_" + idSolicitudConstancia);
+        try {
+            FileUtil.guardarArchivo(event.getFile().getInputstream(), nombreArchivo, ubicacionArchivo);
+            detalle.setDirectorio(ubicacionArchivo);
+            detalle.setNombrearchivo(nombreArchivo);
+            JsfUtil.addSuccessMessage("Archivo cargado exitosamente");
+        } catch (IOException ioe) {
+            log.error(ioe.getLocalizedMessage());
+            JsfUtil.addErrorMessage("Error al cargar el archivo");
+        }
     }
 
     public StreamedContent generarPdf() {
@@ -185,6 +188,10 @@ public class DetallePresupuestoMB implements Serializable {
             JsfUtil.addErrorMessage("Ocurrio un error al generar el pdf del reporte");
         }
         return null;
+    }
+    
+        public StreamedContent downloadFile(Detallepresupuesto archivo) {
+        return FileUtil.getStreamedContent(archivo.getDirectorio(), archivo.getNombrearchivo());
     }
 
 

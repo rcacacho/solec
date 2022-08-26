@@ -64,6 +64,14 @@ public class Detallepresupuesto implements Serializable {
     @Column(name = "total")
     private float total;
 
+    @Size(min = 1, max = 500)
+    @Column(name = "directorio")
+    private String directorio;
+
+    @Size(min = 1, max = 500)
+    @Column(name = "nombrearchivo")
+    private String nombrearchivo;
+
     @Basic(optional = false)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -221,6 +229,22 @@ public class Detallepresupuesto implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getDirectorio() {
+        return directorio;
+    }
+
+    public void setDirectorio(String directorio) {
+        this.directorio = directorio;
+    }
+
+    public String getNombrearchivo() {
+        return nombrearchivo;
+    }
+
+    public void setNombrearchivo(String nombrearchivo) {
+        this.nombrearchivo = nombrearchivo;
     }
 
 }
