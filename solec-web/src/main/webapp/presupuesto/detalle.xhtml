@@ -165,9 +165,9 @@
 
                 <p:row>
                     <p:column>
-                        <p:fileUpload id="fu_file" fileUploadListener="#{detallePresupuestoMB.upload}" mode="advanced" auto="true"   
+                        <p:fileUpload id="fu_file" fileUploadListener="#{detallePresupuestoMB.handleFileUpload}" mode="advanced" auto="true"   
                                       dragDropSupport="false"  
-                                      sizeLimit="10240000"  sizeLimit=""  allowTypes="/(\.|\/)(pdf|png|jpe?g|gif)$/"                        
+                                      sizeLimit="10240000"  allowTypes="/(\.|\/)(pdf|png|jpe?g|gif)$/"                        
                                       update="@all" process="@this"
                                       fileLimit="1" label="Adjuntar..." uploadLabel="Cargar" cancelLabel="Cancelar" invalidSizeMessage="El tamaño del archivo supera el límite permitido"
                                       invalidFileMessage="El formato del archivo no está permitido" fileLimitMessage="Únicamente es posible cargar un archivo por cada solicitud"
@@ -179,7 +179,7 @@
                 <p:row>
                     <p:column>
                         <p:outputPanel  style="margin-top: 7%; margin-bottom: 20px; margin-right: 6%; margin-left: 100%;  font-size: 14px;"  >
-                            <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@form"  
+                            <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="pg_info2"  
                                              style=" margin-left: 5px; " update="@form"/>
                         </p:outputPanel>
                     </p:column>
@@ -234,12 +234,12 @@
                 </p:column>
 
                 <p:column headerText="Archivos" style="width: 15%;">
-                    <h:commandLink value="#{col.nombrearchivo}" 
+                    <p:commandLink value="#{col.nombrearchivo}" 
                                    style="font-size: 13px!important; text-align: center !important;"
                                    onclick="PrimeFaces.monitorDownload(start, stop);"
-                                   title="Descargar" >
-                        <p:fileDownload value="#{bitacoraConstanciaMB.downloadFile(col)}"/>
-                    </h:commandLink>
+                                   title="Descargar" ajax="false" immediate="true">
+                        <p:fileDownload value="#{detallePresupuestoMB.downloadFile(col)}" />
+                    </p:commandLink>
                 </p:column>
 
                 <p:column headerText="Fecha creado" width="12%" >

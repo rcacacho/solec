@@ -108,6 +108,7 @@ public class DetallePresupuestoMB implements Serializable {
         Double total = presupuestoBean.finDetallePresupuestoSumByIdPresupuesto(presupuesto.getIdpresupuesto());
         presupuesto.setTotalpresupuesto(total);
         Presupuesto pp = presupuestoBean.updatePresupuesto(presupuesto);
+        detalle = null;
     }
 
     public void cargarDialogValor() {
@@ -149,7 +150,8 @@ public class DetallePresupuestoMB implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        String ubicacionArchivo = catalogoBeanLocal.findConfiguracionByParametro(ConfiguracionEnum.CARPETA_ARCHIVOS.getParametro()).getValor();
+        //String ubicacionArchivo = catalogoBeanLocal.findConfiguracionByParametro(ConfiguracionEnum.CARPETA_ARCHIVOS.getParametro()).getValor();
+        String ubicacionArchivo = "C:\\data";
         String nombreArchivo = event.getFile().getFileName();
         //archivo.setReferencia(JsfUtil.quitarExtension(nombreArchivo));
         //nombreArchivo = JsfUtil.armarNombre(nombreArchivo, "BitSol_constancia_" + idSolicitudConstancia);
@@ -189,8 +191,8 @@ public class DetallePresupuestoMB implements Serializable {
         }
         return null;
     }
-    
-        public StreamedContent downloadFile(Detallepresupuesto archivo) {
+
+    public StreamedContent downloadFile(Detallepresupuesto archivo) {
         return FileUtil.getStreamedContent(archivo.getDirectorio(), archivo.getNombrearchivo());
     }
 
