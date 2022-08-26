@@ -63,17 +63,17 @@ where idpresupuesto =  $P{ID_PRESUPUESTO}]]>
 	<title>
 		<band height="94" splitType="Stretch">
 			<staticText>
-				<reportElement x="38" y="23" width="642" height="21" uuid="ef86e03c-24e4-4d33-8610-c6233ffacaf2">
+				<reportElement x="38" y="23" width="852" height="21" uuid="ef86e03c-24e4-4d33-8610-c6233ffacaf2">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[TELECOSTA]]></text>
+				<text><![CDATA[SOLEC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="38" y="44" width="642" height="21" uuid="0e9e632e-49bc-4466-91b6-b997665cee8a">
+				<reportElement x="38" y="44" width="852" height="21" uuid="0e9e632e-49bc-4466-91b6-b997665cee8a">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
