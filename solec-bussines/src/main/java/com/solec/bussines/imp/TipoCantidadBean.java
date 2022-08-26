@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 @Singleton
 public class TipoCantidadBean implements TipoCantidadBeanLocal {
 
-    private static final Logger log = Logger.getLogger(PresupuestoBean.class);
+    private static final Logger log = Logger.getLogger(ProyectoBean.class);
 
     @PersistenceContext(unitName = "SolecPU")
     EntityManager em;

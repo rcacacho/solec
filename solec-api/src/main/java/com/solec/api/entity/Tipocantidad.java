@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author elfo_
+ * @author rcacacho
  */
 @Entity
 @Table(name = "tipocantidad")
@@ -36,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Tipocantidad.findByDescripcion", query = "SELECT t FROM Tipocantidad t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "Tipocantidad.findByFechacreacion", query = "SELECT t FROM Tipocantidad t WHERE t.fechacreacion = :fechacreacion"),
     @NamedQuery(name = "Tipocantidad.findByUsuariocreacion", query = "SELECT t FROM Tipocantidad t WHERE t.usuariocreacion = :usuariocreacion"),
+    @NamedQuery(name = "Tipocantidad.findByFechaeliminacion", query = "SELECT t FROM Tipocantidad t WHERE t.fechaeliminacion = :fechaeliminacion"),
+    @NamedQuery(name = "Tipocantidad.findByUsuarioeliminacion", query = "SELECT t FROM Tipocantidad t WHERE t.usuarioeliminacion = :usuarioeliminacion"),
     @NamedQuery(name = "Tipocantidad.findByActivo", query = "SELECT t FROM Tipocantidad t WHERE t.activo = :activo")})
 public class Tipocantidad implements Serializable {
 
@@ -45,47 +46,44 @@ public class Tipocantidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "idtipocantidad")
     private Integer idtipocantidad;
-
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
     @Column(name = "nombres")
     private String nombres;
-
+    
     @Size(max = 1000)
     @Column(name = "descripcion")
     private String descripcion;
-
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
-
+    
     @Column(name = "fechaeliminacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaeliminacion;
-
+    
     @Size(max = 50)
     @Column(name = "usuarioeliminacion")
     private String usuarioeliminacion;
-
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipocantidad", fetch = FetchType.LAZY)
-    private List<Detallepresupuesto> detallepresupuestoList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipocantidad", fetch = FetchType.LAZY)
-    private List<Detallegasto> detallegastoList;
+    
+    @OneToMany(mappedBy = "idtipocantidad", fetch = FetchType.LAZY)
+    private List<Detalleproyecto> detalleproyectoList;
 
     public Tipocantidad() {
     }
@@ -142,14 +140,6 @@ public class Tipocantidad implements Serializable {
         this.usuariocreacion = usuariocreacion;
     }
 
-    public boolean getActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
     public Date getFechaeliminacion() {
         return fechaeliminacion;
     }
@@ -166,22 +156,21 @@ public class Tipocantidad implements Serializable {
         this.usuarioeliminacion = usuarioeliminacion;
     }
 
+    public boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
     @XmlTransient
-    public List<Detallepresupuesto> getDetallepresupuestoList() {
-        return detallepresupuestoList;
+    public List<Detalleproyecto> getDetalleproyectoList() {
+        return detalleproyectoList;
     }
 
-    public void setDetallepresupuestoList(List<Detallepresupuesto> detallepresupuestoList) {
-        this.detallepresupuestoList = detallepresupuestoList;
-    }
-
-    @XmlTransient
-    public List<Detallegasto> getDetallegastoList() {
-        return detallegastoList;
-    }
-
-    public void setDetallegastoList(List<Detallegasto> detallegastoList) {
-        this.detallegastoList = detallegastoList;
+    public void setDetalleproyectoList(List<Detalleproyecto> detalleproyectoList) {
+        this.detalleproyectoList = detalleproyectoList;
     }
 
     @Override
@@ -208,5 +197,5 @@ public class Tipocantidad implements Serializable {
     public String toString() {
         return "com.solec.api.entity.Tipocantidad[ idtipocantidad=" + idtipocantidad + " ]";
     }
-
+    
 }

@@ -2,10 +2,8 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="SolecPU" transaction-type="JTA">
         <jta-data-source>jdbc/solec</jta-data-source>
-        <class>com.solec.api.entity.Detallegasto</class>
-        <class>com.solec.api.entity.Detallepresupuesto</class>
-        <class>com.solec.api.entity.Gasto</class>
-        <class>com.solec.api.entity.Presupuesto</class>
+        <class>com.solec.api.entity.Detalleproyecto</class>
+        <class>com.solec.api.entity.Proyectos</class>
         <class>com.solec.api.entity.Tipocantidad</class>
         <class>com.solec.api.entity.Tipogasto</class>
         <class>com.solec.api.entity.Usuarios</class>

@@ -1,8 +1,5 @@
 package com.solec.bussines.imp;
 
-import com.solec.api.ejb.PresupuestoBeanLocal;
-import com.solec.api.entity.Detallepresupuesto;
-import com.solec.api.entity.Presupuesto;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
@@ -13,15 +10,18 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.apache.log4j.Logger;
+import com.solec.api.ejb.ProyectoBeanLocal;
+import com.solec.api.entity.Detalleproyecto;
+import com.solec.api.entity.Proyectos;
 
 /**
  *
  * @author elfo_
  */
 @Singleton
-public class PresupuestoBean implements PresupuestoBeanLocal {
+public class ProyectoBean implements ProyectoBeanLocal {
 
-    private static final Logger log = Logger.getLogger(PresupuestoBean.class);
+    private static final Logger log = Logger.getLogger(ProyectoBean.class);
 
     @PersistenceContext(unitName = "SolecPU")
     EntityManager em;
@@ -46,8 +46,8 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public List<Presupuesto> ListPresupuestos() {
-        List<Presupuesto> lst = em.createQuery("SELECT qj FROM Presupuesto qj where qj.activo = true ", Presupuesto.class)
+    public List<Proyectos> ListProyectos() {
+        List<Proyectos> lst = em.createQuery("SELECT qj FROM Proyectos qj where qj.activo = true ", Proyectos.class)
                 .getResultList();
 
         if (lst == null || lst.isEmpty()) {
@@ -58,13 +58,13 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public Presupuesto savePresupuesto(Presupuesto presupuesto) {
+    public Proyectos saveProyectos(Proyectos proyecto) {
         try {
-            presupuesto.setActivo(true);
-            presupuesto.setFechacreacion(new Date());
-            em.persist(presupuesto);
+            proyecto.setActivo(true);
+            proyecto.setFechacreacion(new Date());
+            em.persist(proyecto);
             em.flush();
-            return (presupuesto);
+            return (proyecto);
         } catch (ConstraintViolationException ex) {
             String validationError = getConstraintViolationExceptionAsString(ex);
             log.error(validationError);
@@ -78,11 +78,11 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public Presupuesto updatePresupuesto(Presupuesto presupuesto) {
+    public Proyectos updateProyecto(Proyectos proyecto) {
         try {
-            em.merge(presupuesto);
+            em.merge(proyecto);
             em.flush();
-            return (presupuesto);
+            return (proyecto);
         } catch (ConstraintViolationException ex) {
             String validationError = getConstraintViolationExceptionAsString(ex);
             log.error(validationError);
@@ -96,12 +96,12 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public List<Presupuesto> ListPresupuestoByNombre(String nombre) {
+    public List<Proyectos> ListProyectoByNombre(String nombre) {
         if (nombre == null) {
             return null;
         }
 
-        List<Presupuesto> lst = em.createQuery("SELECT col FROM Presupuesto col WHERE col.nombre like :nombre ", Presupuesto.class)
+        List<Proyectos> lst = em.createQuery("SELECT col FROM Proyectos col WHERE col.nombre like :nombre ", Proyectos.class)
                 .setParameter("nombre", '%' + nombre + '%')
                 .getResultList();
 
@@ -112,12 +112,12 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public Presupuesto findPresupuesto(Integer idpresupuesto) {
+    public Proyectos findProyecto(Integer idpresupuesto) {
         if (idpresupuesto == null) {
             return null;
         }
 
-        List<Presupuesto> lst = em.createQuery("SELECT col FROM Presupuesto col WHERE col.idpresupuesto =:idpresupuesto ", Presupuesto.class)
+        List<Proyectos> lst = em.createQuery("SELECT col FROM Proyectos col WHERE col.idpresupuesto =:idpresupuesto ", Proyectos.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 
@@ -128,7 +128,7 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public Detallepresupuesto saveDetallePresupuesto(Detallepresupuesto detallePresupuesto) {
+    public Detalleproyecto saveDetalleProyecto(Detalleproyecto detallePresupuesto) {
         try {
             detallePresupuesto.setActivo(true);
             detallePresupuesto.setFechacreacion(new Date());
@@ -148,12 +148,12 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public List<Detallepresupuesto> ListDetallePresupuestoByIdPresupuesto(Integer idpresupuesto) {
+    public List<Detalleproyecto> ListDetalleProyectoByIdPresupuesto(Integer idpresupuesto) {
         if (idpresupuesto == null) {
             return null;
         }
 
-        List<Detallepresupuesto> lst = em.createQuery("SELECT col FROM Detallepresupuesto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto order by col.fechacreacion desc ", Detallepresupuesto.class)
+        List<Detalleproyecto> lst = em.createQuery("SELECT col FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto order by col.fechacreacion desc ", Detalleproyecto.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 
@@ -164,12 +164,12 @@ public class PresupuestoBean implements PresupuestoBeanLocal {
     }
 
     @Override
-    public Double finDetallePresupuestoSumByIdPresupuesto(Integer idpresupuesto) {
+    public  Double finDetalleProyectoSumByIdProyecto(Integer idpresupuesto) {
         if (idpresupuesto == null) {
             return null;
         }
 
-        List<Double> lst = em.createQuery("SELECT sum (col.total) FROM Detallepresupuesto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto ", Double.class)
+        List<Double> lst = em.createQuery("SELECT sum (col.total) FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto ", Double.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 

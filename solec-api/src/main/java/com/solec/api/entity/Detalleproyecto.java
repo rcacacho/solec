@@ -22,21 +22,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author elfo_
+ * @author rcacacho
  */
 @Entity
-@Table(name = "detallepresupuesto")
+@Table(name = "detalleproyecto")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Detallepresupuesto.findAll", query = "SELECT d FROM Detallepresupuesto d"),
-    @NamedQuery(name = "Detallepresupuesto.findByIddetallepresupuesto", query = "SELECT d FROM Detallepresupuesto d WHERE d.iddetallepresupuesto = :iddetallepresupuesto"),
-    @NamedQuery(name = "Detallepresupuesto.findByCantidad", query = "SELECT d FROM Detallepresupuesto d WHERE d.cantidad = :cantidad"),
-    @NamedQuery(name = "Detallepresupuesto.findByValorunitario", query = "SELECT d FROM Detallepresupuesto d WHERE d.valorunitario = :valorunitario"),
-    @NamedQuery(name = "Detallepresupuesto.findByTotal", query = "SELECT d FROM Detallepresupuesto d WHERE d.total = :total"),
-    @NamedQuery(name = "Detallepresupuesto.findByFechacreacion", query = "SELECT d FROM Detallepresupuesto d WHERE d.fechacreacion = :fechacreacion"),
-    @NamedQuery(name = "Detallepresupuesto.findByUsuariocreacion", query = "SELECT d FROM Detallepresupuesto d WHERE d.usuariocreacion = :usuariocreacion"),
-    @NamedQuery(name = "Detallepresupuesto.findByActivo", query = "SELECT d FROM Detallepresupuesto d WHERE d.activo = :activo")})
-public class Detallepresupuesto implements Serializable {
+    @NamedQuery(name = "Detalleproyecto.findAll", query = "SELECT d FROM Detalleproyecto d"),
+    @NamedQuery(name = "Detalleproyecto.findByIddetallepresupuesto", query = "SELECT d FROM Detalleproyecto d WHERE d.iddetallepresupuesto = :iddetallepresupuesto"),
+    @NamedQuery(name = "Detalleproyecto.findByDescripcion", query = "SELECT d FROM Detalleproyecto d WHERE d.descripcion = :descripcion"),
+    @NamedQuery(name = "Detalleproyecto.findByCantidad", query = "SELECT d FROM Detalleproyecto d WHERE d.cantidad = :cantidad"),
+    @NamedQuery(name = "Detalleproyecto.findByValorunitario", query = "SELECT d FROM Detalleproyecto d WHERE d.valorunitario = :valorunitario"),
+    @NamedQuery(name = "Detalleproyecto.findByTotal", query = "SELECT d FROM Detalleproyecto d WHERE d.total = :total"),
+    @NamedQuery(name = "Detalleproyecto.findByDirectorio", query = "SELECT d FROM Detalleproyecto d WHERE d.directorio = :directorio"),
+    @NamedQuery(name = "Detalleproyecto.findByNombrearchivo", query = "SELECT d FROM Detalleproyecto d WHERE d.nombrearchivo = :nombrearchivo"),
+    @NamedQuery(name = "Detalleproyecto.findByObservacion", query = "SELECT d FROM Detalleproyecto d WHERE d.observacion = :observacion"),
+    @NamedQuery(name = "Detalleproyecto.findByFechacreacion", query = "SELECT d FROM Detalleproyecto d WHERE d.fechacreacion = :fechacreacion"),
+    @NamedQuery(name = "Detalleproyecto.findByUsuariocreacion", query = "SELECT d FROM Detalleproyecto d WHERE d.usuariocreacion = :usuariocreacion"),
+    @NamedQuery(name = "Detalleproyecto.findByActivo", query = "SELECT d FROM Detalleproyecto d WHERE d.activo = :activo")})
+public class Detalleproyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,75 +48,75 @@ public class Detallepresupuesto implements Serializable {
     @Basic(optional = false)
     @Column(name = "iddetallepresupuesto")
     private Integer iddetallepresupuesto;
-
-    @Size(min = 1, max = 500)
+    
+    @Size(max = 500)
     @Column(name = "descripcion")
     private String descripcion;
-
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
-    private Integer cantidad;
-
+    private int cantidad;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "valorunitario")
     private float valorunitario;
-
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "total")
     private float total;
-
-    @Size(min = 1, max = 500)
+    
+    @Size(max = 500)
     @Column(name = "directorio")
     private String directorio;
-
-    @Size(min = 1, max = 500)
+    
+    @Size(max = 500)
     @Column(name = "nombrearchivo")
     private String nombrearchivo;
-
-    @Size(min = 1, max = 1000)
+    
+    @Size(max = 1000)
     @Column(name = "observacion")
     private String observacion;
-
+    
     @Basic(optional = false)
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fechacreacion")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
-
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-
+    
     @JoinColumn(name = "idpresupuesto", referencedColumnName = "idpresupuesto")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Presupuesto idpresupuesto;
-
+    private Proyectos idpresupuesto;
+    
     @JoinColumn(name = "idtipocantidad", referencedColumnName = "idtipocantidad")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tipocantidad idtipocantidad;
-
+    
     @JoinColumn(name = "idtipogasto", referencedColumnName = "idtipogasto")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tipogasto idtipogasto;
 
-    public Detallepresupuesto() {
+    public Detalleproyecto() {
     }
 
-    public Detallepresupuesto(Integer iddetallepresupuesto) {
+    public Detalleproyecto(Integer iddetallepresupuesto) {
         this.iddetallepresupuesto = iddetallepresupuesto;
     }
 
-    public Detallepresupuesto(Integer iddetallepresupuesto, int cantidad, float valorunitario, float total, Date fechacreacion, String usuariocreacion, boolean activo) {
+    public Detalleproyecto(Integer iddetallepresupuesto, int cantidad, float valorunitario, float total, Date fechacreacion, String usuariocreacion, boolean activo) {
         this.iddetallepresupuesto = iddetallepresupuesto;
         this.cantidad = cantidad;
         this.valorunitario = valorunitario;
@@ -130,11 +134,19 @@ public class Detallepresupuesto implements Serializable {
         this.iddetallepresupuesto = iddetallepresupuesto;
     }
 
-    public Integer getCantidad() {
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -152,6 +164,30 @@ public class Detallepresupuesto implements Serializable {
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    public String getDirectorio() {
+        return directorio;
+    }
+
+    public void setDirectorio(String directorio) {
+        this.directorio = directorio;
+    }
+
+    public String getNombrearchivo() {
+        return nombrearchivo;
+    }
+
+    public void setNombrearchivo(String nombrearchivo) {
+        this.nombrearchivo = nombrearchivo;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
     public Date getFechacreacion() {
@@ -178,11 +214,11 @@ public class Detallepresupuesto implements Serializable {
         this.activo = activo;
     }
 
-    public Presupuesto getIdpresupuesto() {
+    public Proyectos getIdpresupuesto() {
         return idpresupuesto;
     }
 
-    public void setIdpresupuesto(Presupuesto idpresupuesto) {
+    public void setIdpresupuesto(Proyectos idpresupuesto) {
         this.idpresupuesto = idpresupuesto;
     }
 
@@ -212,10 +248,10 @@ public class Detallepresupuesto implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Detallepresupuesto)) {
+        if (!(object instanceof Detalleproyecto)) {
             return false;
         }
-        Detallepresupuesto other = (Detallepresupuesto) object;
+        Detalleproyecto other = (Detalleproyecto) object;
         if ((this.iddetallepresupuesto == null && other.iddetallepresupuesto != null) || (this.iddetallepresupuesto != null && !this.iddetallepresupuesto.equals(other.iddetallepresupuesto))) {
             return false;
         }
@@ -224,39 +260,7 @@ public class Detallepresupuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.solec.api.entity.Detallepresupuesto[ iddetallepresupuesto=" + iddetallepresupuesto + " ]";
+        return "com.solec.api.entity.Detalleproyecto[ iddetallepresupuesto=" + iddetallepresupuesto + " ]";
     }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getDirectorio() {
-        return directorio;
-    }
-
-    public void setDirectorio(String directorio) {
-        this.directorio = directorio;
-    }
-
-    public String getNombrearchivo() {
-        return nombrearchivo;
-    }
-
-    public void setNombrearchivo(String nombrearchivo) {
-        this.nombrearchivo = nombrearchivo;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
+    
 }

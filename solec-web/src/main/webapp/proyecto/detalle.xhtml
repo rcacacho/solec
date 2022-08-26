@@ -168,7 +168,7 @@
             <p:panelGrid  columns="1" styleClass="no-border" style="width: 100%; margin-left: 4%;">
                 <p:outputLabel value="Observación:" styleClass="colorTitulo" />
                 <p:inputTextarea  placeholder="Ingresa una observación"
-                                  value="#{detalleConstanciaMB.constancia.observaciones}"
+                                  value="#{detallePresupuestoMB.detalle.observacion}"
                                   maxlength="1000" 
                                   style="width: 910px!important;height: 60px!important;"
                                   counter="ot_car_ita_asunto2" counterTemplate="Tienes {0} caracteres restantes">
@@ -177,15 +177,15 @@
             </p:panelGrid>
 
             <p:panelGrid  columns="2" styleClass="no-border" style="width: 10%; margin-left: 4%;">
-                    <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@this"  
-                                     style=" margin-left: 5px; " update="@form"/>
-      
-                    <p:commandButton value="Imprimir" style="float: left;"
-                                     styleClass="button-16 b-greylight-16" icon="ui-icon-print"
-                                     onclick="PrimeFaces.monitorDownload(start, stop);" 
-                                     immediate="true" process="@this" update="@form" ajax="false">
-                        <p:fileDownload value="#{detallePresupuestoMB.generarPdf()}"/>
-                    </p:commandButton>
+                <p:commandButton value="Guardar" action="#{detallePresupuestoMB.saveDetalle()}" icon="ui-icon-disk" process="@this"  
+                                 style=" margin-left: 5px; " update="@form"/>
+
+                <p:commandButton value="Imprimir" style="float: left;"
+                                 styleClass="button-16 b-greylight-16" icon="ui-icon-print"
+                                 onclick="PrimeFaces.monitorDownload(start, stop);" 
+                                 immediate="true" process="@this" update="@form" ajax="false">
+                    <p:fileDownload value="#{detallePresupuestoMB.generarPdf()}"/>
+                </p:commandButton>
             </p:panelGrid>
 
 
@@ -221,6 +221,10 @@
                     <p:outputLabel value="#{col.total}">
                         <f:convertNumber groupingUsed="true" minFractionDigits="2" />
                     </p:outputLabel>
+                </p:column>
+
+                <p:column headerText="Observación" width="20%" >
+                    <p:outputLabel value="#{col.observacion}"/>
                 </p:column>
 
                 <p:column headerText="Archivos" style="width: 15%;">

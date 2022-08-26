@@ -1,8 +1,6 @@
 package com.solec.web.presupuesto;
 
 import com.solec.api.ejb.CatalogoBeanLocal;
-import com.solec.api.ejb.PresupuestoBeanLocal;
-import com.solec.api.entity.Presupuesto;
 import com.solec.web.utils.JsfUtil;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +10,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
+import com.solec.api.ejb.ProyectoBeanLocal;
+import com.solec.api.entity.Proyectos;
 
 /**
  *
@@ -24,18 +24,18 @@ public class PresupuestoBuzonMB implements Serializable {
     private static final Logger log = Logger.getLogger(PresupuestoBuzonMB.class);
 
     @EJB
-    private PresupuestoBeanLocal presupuestoBean;
+    private ProyectoBeanLocal presupuestoBean;
     @EJB
     private CatalogoBeanLocal catalogoBean;
 
-    private List<Presupuesto> listPresupuesto;
+    private List<Proyectos> listPresupuesto;
     private String nombre;
     private Date fechaInicio;
     private Date fechaFin;
 
     @PostConstruct
     public void init() {
-        listPresupuesto = presupuestoBean.ListPresupuestos();
+        listPresupuesto = presupuestoBean.ListProyectos();
     }
 
     public void buscar() {
@@ -49,15 +49,15 @@ public class PresupuestoBuzonMB implements Serializable {
     }
 
     public void detallePresupuesto(Integer id) {
-        JsfUtil.redirectTo("/presupuesto/detalle.xhtml?idpresupuesto=" + id);
+        JsfUtil.redirectTo("/proyecto/detalle.xhtml?idpresupuesto=" + id);
     }
 
     /*Metodos getters y setters*/
-    public List<Presupuesto> getListPresupuesto() {
+    public List<Proyectos> getListPresupuesto() {
         return listPresupuesto;
     }
 
-    public void setListPresupuesto(List<Presupuesto> listPresupuesto) {
+    public void setListPresupuesto(List<Proyectos> listPresupuesto) {
         this.listPresupuesto = listPresupuesto;
     }
 

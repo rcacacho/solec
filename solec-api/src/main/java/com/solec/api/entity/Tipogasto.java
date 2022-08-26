@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author elfo_
+ * @author rcacacho
  */
 @Entity
 @Table(name = "tipogasto")
@@ -83,11 +82,8 @@ public class Tipogasto implements Serializable {
     @Column(name = "activo")
     private boolean activo;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipogasto", fetch = FetchType.LAZY)
-    private List<Detallepresupuesto> detallepresupuestoList;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipogasto", fetch = FetchType.LAZY)
-    private List<Detallegasto> detallegastoList;
+    @OneToMany(mappedBy = "idtipogasto", fetch = FetchType.LAZY)
+    private List<Detalleproyecto> detalleproyectoList;
 
     public Tipogasto() {
     }
@@ -169,21 +165,12 @@ public class Tipogasto implements Serializable {
     }
 
     @XmlTransient
-    public List<Detallepresupuesto> getDetallepresupuestoList() {
-        return detallepresupuestoList;
+    public List<Detalleproyecto> getDetalleproyectoList() {
+        return detalleproyectoList;
     }
 
-    public void setDetallepresupuestoList(List<Detallepresupuesto> detallepresupuestoList) {
-        this.detallepresupuestoList = detallepresupuestoList;
-    }
-
-    @XmlTransient
-    public List<Detallegasto> getDetallegastoList() {
-        return detallegastoList;
-    }
-
-    public void setDetallegastoList(List<Detallegasto> detallegastoList) {
-        this.detallegastoList = detallegastoList;
+    public void setDetalleproyectoList(List<Detalleproyecto> detalleproyectoList) {
+        this.detalleproyectoList = detalleproyectoList;
     }
 
     @Override

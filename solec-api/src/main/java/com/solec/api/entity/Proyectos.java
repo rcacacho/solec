@@ -24,20 +24,21 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author elfo_
+ * @author rcacacho
  */
 @Entity
-@Table(name = "presupuesto")
+@Table(name = "proyectos")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Presupuesto.findAll", query = "SELECT p FROM Presupuesto p"),
-    @NamedQuery(name = "Presupuesto.findByIdpresupuesto", query = "SELECT p FROM Presupuesto p WHERE p.idpresupuesto = :idpresupuesto"),
-    @NamedQuery(name = "Presupuesto.findByNombre", query = "SELECT p FROM Presupuesto p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "Presupuesto.findByDireccion", query = "SELECT p FROM Presupuesto p WHERE p.direccion = :direccion"),
-    @NamedQuery(name = "Presupuesto.findByFechacreacion", query = "SELECT p FROM Presupuesto p WHERE p.fechacreacion = :fechacreacion"),
-    @NamedQuery(name = "Presupuesto.findByUsuariocreacion", query = "SELECT p FROM Presupuesto p WHERE p.usuariocreacion = :usuariocreacion"),
-    @NamedQuery(name = "Presupuesto.findByActivo", query = "SELECT p FROM Presupuesto p WHERE p.activo = :activo")})
-public class Presupuesto implements Serializable {
+    @NamedQuery(name = "Proyectos.findAll", query = "SELECT p FROM Proyectos p"),
+    @NamedQuery(name = "Proyectos.findByIdpresupuesto", query = "SELECT p FROM Proyectos p WHERE p.idpresupuesto = :idpresupuesto"),
+    @NamedQuery(name = "Proyectos.findByNombre", query = "SELECT p FROM Proyectos p WHERE p.nombre = :nombre"),
+    @NamedQuery(name = "Proyectos.findByDireccion", query = "SELECT p FROM Proyectos p WHERE p.direccion = :direccion"),
+    @NamedQuery(name = "Proyectos.findByTotalpresupuesto", query = "SELECT p FROM Proyectos p WHERE p.totalpresupuesto = :totalpresupuesto"),
+    @NamedQuery(name = "Proyectos.findByFechacreacion", query = "SELECT p FROM Proyectos p WHERE p.fechacreacion = :fechacreacion"),
+    @NamedQuery(name = "Proyectos.findByUsuariocreacion", query = "SELECT p FROM Proyectos p WHERE p.usuariocreacion = :usuariocreacion"),
+    @NamedQuery(name = "Proyectos.findByActivo", query = "SELECT p FROM Proyectos p WHERE p.activo = :activo")})
+public class Proyectos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -77,19 +78,16 @@ public class Presupuesto implements Serializable {
     private boolean activo;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpresupuesto", fetch = FetchType.LAZY)
-    private List<Detallepresupuesto> detallepresupuestoList;
+    private List<Detalleproyecto> detalleproyectoList;
 
-    @OneToMany(mappedBy = "idpresupuesto", fetch = FetchType.LAZY)
-    private List<Gasto> gastoList;
-
-    public Presupuesto() {
+    public Proyectos() {
     }
 
-    public Presupuesto(Integer idpresupuesto) {
+    public Proyectos(Integer idpresupuesto) {
         this.idpresupuesto = idpresupuesto;
     }
 
-    public Presupuesto(Integer idpresupuesto, String nombre, Date fechacreacion, String usuariocreacion, boolean activo) {
+    public Proyectos(Integer idpresupuesto, String nombre, Date fechacreacion, String usuariocreacion, boolean activo) {
         this.idpresupuesto = idpresupuesto;
         this.nombre = nombre;
         this.fechacreacion = fechacreacion;
@@ -121,6 +119,14 @@ public class Presupuesto implements Serializable {
         this.direccion = direccion;
     }
 
+    public Double getTotalpresupuesto() {
+        return totalpresupuesto;
+    }
+
+    public void setTotalpresupuesto(Double totalpresupuesto) {
+        this.totalpresupuesto = totalpresupuesto;
+    }
+
     public Date getFechacreacion() {
         return fechacreacion;
     }
@@ -146,21 +152,12 @@ public class Presupuesto implements Serializable {
     }
 
     @XmlTransient
-    public List<Detallepresupuesto> getDetallepresupuestoList() {
-        return detallepresupuestoList;
+    public List<Detalleproyecto> getDetalleproyectoList() {
+        return detalleproyectoList;
     }
 
-    public void setDetallepresupuestoList(List<Detallepresupuesto> detallepresupuestoList) {
-        this.detallepresupuestoList = detallepresupuestoList;
-    }
-
-    @XmlTransient
-    public List<Gasto> getGastoList() {
-        return gastoList;
-    }
-
-    public void setGastoList(List<Gasto> gastoList) {
-        this.gastoList = gastoList;
+    public void setDetalleproyectoList(List<Detalleproyecto> detalleproyectoList) {
+        this.detalleproyectoList = detalleproyectoList;
     }
 
     @Override
@@ -173,10 +170,10 @@ public class Presupuesto implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Presupuesto)) {
+        if (!(object instanceof Proyectos)) {
             return false;
         }
-        Presupuesto other = (Presupuesto) object;
+        Proyectos other = (Proyectos) object;
         if ((this.idpresupuesto == null && other.idpresupuesto != null) || (this.idpresupuesto != null && !this.idpresupuesto.equals(other.idpresupuesto))) {
             return false;
         }
@@ -185,15 +182,7 @@ public class Presupuesto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.solec.api.entity.Presupuesto[ idpresupuesto=" + idpresupuesto + " ]";
-    }
-
-    public Double getTotalpresupuesto() {
-        return totalpresupuesto;
-    }
-
-    public void setTotalpresupuesto(Double totalpresupuesto) {
-        this.totalpresupuesto = totalpresupuesto;
+        return "com.solec.api.entity.Proyectos[ idpresupuesto=" + idpresupuesto + " ]";
     }
 
 }

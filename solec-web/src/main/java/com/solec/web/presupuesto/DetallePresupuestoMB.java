@@ -1,14 +1,10 @@
 package com.solec.web.presupuesto;
 
 import com.solec.api.ejb.CatalogoBeanLocal;
-import com.solec.api.ejb.PresupuestoBeanLocal;
 import com.solec.api.ejb.TipoCantidadBeanLocal;
 import com.solec.api.ejb.TipoGastoBeanLocal;
-import com.solec.api.entity.Detallepresupuesto;
-import com.solec.api.entity.Presupuesto;
 import com.solec.api.entity.Tipocantidad;
 import com.solec.api.entity.Tipogasto;
-import com.solec.api.enums.ConfiguracionEnum;
 import com.solec.web.utils.FileUtil;
 import com.solec.web.utils.JasperUtil;
 import com.solec.web.utils.JsfUtil;
@@ -33,6 +29,9 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import com.solec.api.ejb.ProyectoBeanLocal;
+import com.solec.api.entity.Detalleproyecto;
+import com.solec.api.entity.Proyectos;
 
 /**
  *
@@ -45,7 +44,7 @@ public class DetallePresupuestoMB implements Serializable {
     private static final Logger log = Logger.getLogger(DetallePresupuestoMB.class);
 
     @EJB
-    private PresupuestoBeanLocal presupuestoBean;
+    private ProyectoBeanLocal presupuestoBean;
     @EJB
     private CatalogoBeanLocal catalogoBeanLocal;
     @EJB
@@ -56,34 +55,34 @@ public class DetallePresupuestoMB implements Serializable {
     private DataSource dataSource;
 
     private Integer idpresupuesto;
-    private Presupuesto presupuesto;
+    private Proyectos presupuesto;
     private List<Tipogasto> listTipoGasto;
     private List<Tipocantidad> listTipoCantidad;
     private Tipogasto tipoGastoSelected;
     private Tipocantidad tipoCantidadSelected;
-    private Detallepresupuesto detalle;
-    private List<Detallepresupuesto> listDetalle;
+    private Detalleproyecto detalle;
+    private List<Detalleproyecto> listDetalle;
     private Tipogasto tipoGasto;
     private Tipocantidad tipoCantidad;
     private UploadedFile archivo;
 
     public DetallePresupuestoMB() {
-        detalle = new Detallepresupuesto();
+        detalle = new Detalleproyecto();
         tipoGasto = new Tipogasto();
         tipoCantidad = new Tipocantidad();
     }
 
     public void cargarDatos() {
         if (presupuesto == null) {
-            presupuesto = presupuestoBean.findPresupuesto(idpresupuesto);
+            presupuesto = presupuestoBean.findProyecto(idpresupuesto);
             listTipoGasto = catalogoBeanLocal.ListTipoGasto();
             listTipoCantidad = catalogoBeanLocal.ListTipoCantidad();
-            listDetalle = presupuestoBean.ListDetallePresupuestoByIdPresupuesto(idpresupuesto);
+            listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
         }
     }
 
     public void regresar() {
-        JsfUtil.redirectTo("/presupuesto/lista.xhtml");
+        JsfUtil.redirectTo("/proyecto/lista.xhtml");
     }
 
     public void calcularTotal() {
@@ -100,18 +99,18 @@ public class DetallePresupuestoMB implements Serializable {
         detalle.setIdtipocantidad(tipoCantidadSelected);
         detalle.setIdtipogasto(tipoGastoSelected);
         detalle.setUsuariocreacion(SesionUsuarioMB.getUserName());
-        Detallepresupuesto det = presupuestoBean.saveDetallePresupuesto(detalle);
+        Detalleproyecto det = presupuestoBean.saveDetalleProyecto(detalle);
         if (det != null) {
             JsfUtil.addSuccessMessage("Registro almacenado exitosamente");
         }
 
-        Double total = presupuestoBean.finDetallePresupuestoSumByIdPresupuesto(presupuesto.getIdpresupuesto());
+        Double total = presupuestoBean.finDetalleProyectoSumByIdProyecto(presupuesto.getIdpresupuesto());
         presupuesto.setTotalpresupuesto(total);
-        Presupuesto pp = presupuestoBean.updatePresupuesto(presupuesto);
+        Proyectos pp = presupuestoBean.updateProyecto(presupuesto);
         detalle = null;
         tipoCantidadSelected = null;
-        detalle = new Detallepresupuesto();
-        listDetalle = presupuestoBean.ListDetallePresupuestoByIdPresupuesto(idpresupuesto);
+        detalle = new Detalleproyecto();
+        listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
     }
 
     public void cargarDialogValor() {
@@ -195,7 +194,7 @@ public class DetallePresupuestoMB implements Serializable {
         return null;
     }
 
-    public StreamedContent downloadFile(Detallepresupuesto archivo) {
+    public StreamedContent downloadFile(Detalleproyecto archivo) {
         return FileUtil.getStreamedContent(archivo.getDirectorio(), archivo.getNombrearchivo());
     }
 
@@ -209,11 +208,11 @@ public class DetallePresupuestoMB implements Serializable {
         this.idpresupuesto = idpresupuesto;
     }
 
-    public Presupuesto getPresupuesto() {
+    public Proyectos getPresupuesto() {
         return presupuesto;
     }
 
-    public void setPresupuesto(Presupuesto presupuesto) {
+    public void setPresupuesto(Proyectos presupuesto) {
         this.presupuesto = presupuesto;
     }
 
@@ -249,19 +248,19 @@ public class DetallePresupuestoMB implements Serializable {
         this.tipoCantidadSelected = tipoCantidadSelected;
     }
 
-    public Detallepresupuesto getDetalle() {
+    public Detalleproyecto getDetalle() {
         return detalle;
     }
 
-    public void setDetalle(Detallepresupuesto detalle) {
+    public void setDetalle(Detalleproyecto detalle) {
         this.detalle = detalle;
     }
 
-    public List<Detallepresupuesto> getListDetalle() {
+    public List<Detalleproyecto> getListDetalle() {
         return listDetalle;
     }
 
-    public void setListDetalle(List<Detallepresupuesto> listDetalle) {
+    public void setListDetalle(List<Detalleproyecto> listDetalle) {
         this.listDetalle = listDetalle;
     }
 
