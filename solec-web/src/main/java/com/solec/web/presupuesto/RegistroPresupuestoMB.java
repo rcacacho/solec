@@ -38,7 +38,7 @@ public class RegistroPresupuestoMB implements Serializable {
         presupuesto.setUsuariocreacion(SesionUsuarioMB.getUserName());
         Presupuesto response = presupuestoBean.savePresupuesto(presupuesto);
         if (response != null) {
-            JsfUtil.addSuccessMessage("Presupuesto registrado exitosamente");
+            JsfUtil.addSuccessMessage("Proyecto registrado exitosamente");
             presupuesto = null;
             return;
         }

@@ -1,15 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                template="/templates/template.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"    
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="pageTitle">
+        Registro de Usuario
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frm_content">
+            <p:growl autoUpdate="true" showDetail="false" showSummary="true"/>
+            <div align="center">
+                <p:panelGrid columns="2" id="pg_denunciante"  styleClass="no-border" style="width: 100%; margin-top: 1%; margin-left: 25px;"  >
+                    <p:outputLabel for="pNombre" value="Nombres:" styleClass="colorTitulo" style="font-weight: bold;"/>
+                    <p:outputLabel for="pApellido"  value="Apellidos:" styleClass="colorTitulo" style="font-weight: bold;"/>
+
+                    <p:inputText id="pNombre" value="#{registroUsuarioMB.usuario.nombres}" style="width: 350px;"  placeholder="Ingrese los nombres" />
+                    <p:inputText id="pApellido" value="#{registroUsuarioMB.usuario.apellidos}" style="width: 350px;"  placeholder="Ingrese los apellidos" />
+
+                    <p:outputLabel for="dpi" value="Usuario:"  styleClass="colorTitulo" style="font-weight: bold;"/>
+                    <p:outputLabel for="nif"  value="Password:" styleClass="colorTitulo" style="font-weight: bold;"/>
+
+                    <p:inputText id="dpi" value="#{registroUsuarioMB.usuario.usuario}" style="width: 350px;"  placeholder="Ingrese un usuario" />
+                    <p:password id="nif" value="#{registroUsuarioMB.usuario.password}" style="width: 350px;"  placeholder="Ingrese un password" />
+
+                    <div align="center">
+                        <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 36%;  font-size: 14px;"  >
+                            <p:commandButton value="Guardar" action="#{registroUsuarioMB.saveUsuario()}" icon="ui-icon-disk" process="@form"  style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar el usuario?');" update="@form"/>
+                            <p:commandButton value="Cancelar"  process="@this" action="#{registroUsuarioMB.regresar()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
+                        </p:outputPanel>
+                    </div>
+                </p:panelGrid>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

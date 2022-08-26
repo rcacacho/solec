@@ -1,14 +1,18 @@
 package com.solec.web.usuario;
 
-import com.solec.api.ejb.CatalogoBeanLocal;
+import com.solec.api.ejb.UsuarioBeanLocal;
 import com.solec.api.entity.Usuarios;
 import com.solec.web.utils.JsfUtil;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
@@ -16,14 +20,14 @@ import org.primefaces.context.RequestContext;
  *
  * @author elfo_
  */
-public class ListaColaboradoresMB {
+@ManagedBean(name = "listaColaboradoresMB")
+@ViewScoped
+public class ListaColaboradoresMB implements Serializable {
 
     private static final Logger log = Logger.getLogger(ListaColaboradoresMB.class);
 
-//    @EJB
-//    private UsuarioBeanLocal usuarioBeanLocal;
     @EJB
-    private CatalogoBeanLocal catalogoBeanLocal;
+    private UsuarioBeanLocal usuarioBeanLocal;
 
     private List<Usuarios> listUsuario;
     private Usuarios selectedUsuario;
@@ -33,15 +37,15 @@ public class ListaColaboradoresMB {
     }
 
     public void cargarDatos() {
-       // listUsuario = usuarioBeanLocal.listaUsuarios();
+        listUsuario = usuarioBeanLocal.listaUsuarios();
     }
 
     public void linkRegistro() {
-        JsfUtil.redirectTo("/usuario/registro.xhtml");
+        JsfUtil.redirectTo("/usuarios/registro.xhtml");
     }
 
     public void detalle(Integer id) {
-        JsfUtil.redirectTo("/usuario/detalle.xhtml?idusuario=" + id);
+        JsfUtil.redirectTo("/usuarios/detalle.xhtml?idusuario=" + id);
     }
 
     public void reinicioPassword(Usuarios usu) {
@@ -53,12 +57,12 @@ public class ListaColaboradoresMB {
         String contra = md5(selectedUsuario.getPassword());
         selectedUsuario.setPassword(contra);
         //selectedUsuario.setUsuariomodificacion(SesionUsuarioMB.getUserName());
-        //Usuarios responseVerificacion = usuarioBeanLocal.reinicioPassword(selectedUsuario);
-//        if (responseVerificacion != null) {
-//            JsfUtil.addSuccessMessage("Se reinicio la contraseña exitosamente");
-//            selectedUsuario = null;
-//            return;
-//        }
+        Usuarios responseVerificacion = usuarioBeanLocal.reinicioPassword(selectedUsuario);
+        if (responseVerificacion != null) {
+            JsfUtil.addSuccessMessage("Se reinicio la contraseña exitosamente");
+            selectedUsuario = null;
+            return;
+        }
     }
 
     public String md5(String input) {
@@ -83,15 +87,15 @@ public class ListaColaboradoresMB {
     }
 
     public void eliminarUsuario(Usuarios us) throws IOException {
-        //us.setFechacrecion(new Date());
+        us.setFechacrecion(new Date());
         //us.setUsuariomodificacion(SesionUsuarioMB.getUserName());
         us.setActivo(false);
-//        Usuarios response = usuarioBeanLocal.updateUsuario(us);
-//        if (response != null) {
-//            JsfUtil.addSuccessMessage("Usuario eliminado exitosamente");
-//        } else {
-//            JsfUtil.addErrorMessage("Ocurrio un error al eliminar el usuario");
-//        }
+        Usuarios response = usuarioBeanLocal.updateUsuario(us);
+        if (response != null) {
+            JsfUtil.addSuccessMessage("Usuario eliminado exitosamente");
+        } else {
+            JsfUtil.addErrorMessage("Ocurrio un error al eliminar el usuario");
+        }
 
         cargarDatos();
     }

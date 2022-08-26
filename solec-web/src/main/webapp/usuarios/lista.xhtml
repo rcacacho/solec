@@ -23,7 +23,7 @@
                 <br />
 
                 <div>
-                    <p:commandButton value="Agregar Colaborador" style="float:left!important; margin-left:7.5% !important; margin-top: -15px!important;" styleClass="button-16 b-greylight-16" icon="ui-icon-plus" 
+                    <p:commandButton value="Agregar Usuario" style="float:left!important; margin-left:7.5% !important; margin-top: -15px!important;" styleClass="button-16 b-greylight-16" icon="ui-icon-plus" 
                                      action="#{listaColaboradoresMB.linkRegistro()}" process="@this"/>
                 </div>
                 <br />
@@ -48,12 +48,6 @@
                         <p:outputLabel value="#{col.usuario}"/>
                     </p:column>
 
-                    <p:column headerText="Fecha Creación" width="17%" >
-                        <p:outputLabel value="#{col.fechacreacion}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </p:outputLabel>
-                    </p:column>
-
                     <p:column width="15%" exportable="false" >
                         <p:commandButton value="Detalle" 
                                          style="float:left!important; margin-left:7.5% !important;" process="@this" 
@@ -73,12 +67,6 @@
                                          styleClass="button-16 b-greylight-16" icon="ui-icon-trash"
                                          onstart="return confirm('¿Confirmas eliminar el usuario del sistema?');" 
                                          action="#{listaColaboradoresMB.eliminarUsuario(col)}" update="@form"/>
-                    </p:column>
-                    <p:column width="18%" exportable="false" >
-                        <p:commandButton value="Asignar" 
-                                         style="margin-top: 3px;" process="@this" 
-                                         styleClass="button-16 b-greylight-16" icon="ui-icon-check"
-                                         action="#{listaColaboradoresMB.asignarMunicipio(col)}" update="@form"/>
                     </p:column>
                 </p:dataTable>
             </div>
@@ -102,47 +90,6 @@
                 </p:panelGrid>
             </p:dialog>
 
-            <p:dialog header="Asignar municipio" widgetVar="dlgAsignacion" id="dlgAsignacion" 
-                      onShow="stop();"  onHide="stop();" 
-                      modal="true" position="top" resizable="false" width="500px">
-                <p:panelGrid  columns="1" styleClass="no-border" style="width: 80%;"  >
-                    <p:outputLabel  value="Municipio:" styleClass="colorTitulo" />
-                    <p:selectOneMenu id="sec" value="#{listaColaboradoresMB.municipioAsignacion}" style="width: 50%" 
-                                     converter="entityConverter" filter="true" filterMatchMode="contains"
-                                     required="true" requiredMessage="Debes seleccionar un municipio" >
-                        <p:ajax event="itemSelect"/>
-                        <f:selectItem itemLabel="(selecciona un municipio)" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{listaColaboradoresMB.listMunicipio}"  var="mun" itemLabel="#{mun.municipio}" itemValue="#{mun}"/>
-                    </p:selectOneMenu>
-
-                    <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >
-                        <p:commandButton value="Agregar" action="#{listaColaboradoresMB.guardarMunicipio()}" icon="ui-icon-disk" process="@this"  
-                                         style=" margin-left: 5px; " update="dt_asignacion" />
-                        <p:commandButton value="Cancelar"  process="@this" action="#{listaColaboradoresMB.cerrarDialogMuncipio()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
-                    </p:outputPanel>
-                </p:panelGrid>
-
-                <p:dataTable id="dt_asignacion" var="col" value="#{listaColaboradoresMB.listUsuarioMunicipio}" widgetVar="asuetos"
-                             emptyMessage="No hay municipios registrados" 
-                             styleClass="tabla-mp" style="width: 85%" rowIndexVar="rowId"
-                             rows="10" paginator="#{listaColaboradoresMB.listUsuarioMunicipio.size()>5}"  paginatorPosition="bottom">
-
-                    <p:column headerText="No." style="width: 5%;">
-                        #{rowId+1}
-                    </p:column>
-
-                    <p:column headerText="municipio" width="25%" >
-                        <p:outputLabel value="#{col.idmunicipio.municipio}"/>
-                    </p:column>
-
-                    <p:column width="18%" exportable="false" >
-                        <p:commandButton value="Eliminar" 
-                                         style="margin-top: 3px;" process="@this" 
-                                         styleClass="button-16 b-greylight-16" icon="ui-icon-trash"
-                                         action="#{listaColaboradoresMB.eliminarMunicipio(col)}" update="dt_asignacion"/>
-                    </p:column>
-                </p:dataTable>
-            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

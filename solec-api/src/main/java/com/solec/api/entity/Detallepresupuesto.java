@@ -72,6 +72,10 @@ public class Detallepresupuesto implements Serializable {
     @Column(name = "nombrearchivo")
     private String nombrearchivo;
 
+    @Size(min = 1, max = 1000)
+    @Column(name = "observacion")
+    private String observacion;
+
     @Basic(optional = false)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -245,6 +249,14 @@ public class Detallepresupuesto implements Serializable {
 
     public void setNombrearchivo(String nombrearchivo) {
         this.nombrearchivo = nombrearchivo;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
 }
