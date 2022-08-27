@@ -262,19 +262,6 @@
                     </p:outputLabel>
                 </p:column>
 
-                <p:column headerText="Observación" width="15%" >
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <p:outputLabel value="#{col.observacion}"/>
-                        </f:facet>
-                        <f:facet name="input">
-                            <p:inputText value="#{col.observacion}" size="12" >
-                                <p:ajax event="blur" process="@this"/>
-                            </p:inputText> 
-                        </f:facet>
-                    </p:cellEditor>
-                </p:column>
-
                 <p:column headerText="Archivos" style="width: 18%;">
                     <p:commandLink value="#{col.referencianombre}" 
                                    style="font-size: 13px!important; text-align: center !important;"
@@ -290,12 +277,12 @@
                     </p:outputLabel>
                 </p:column>
 
-                <p:column width="13%" exportable="false" >
+                <p:column width="16%" exportable="false" >
                     <p:commandButton value="Eliminar" 
-                                     style="float:left!important; margin-left:7.5% !important;" process="@this" 
+                                     style="float:left!important;" process="@this" 
                                      styleClass="button-16 b-greylight-16" icon="ui-icon-closethick"
                                      action="#{detallePresupuestoMB.dialogEliminar(col)}" update="@form"/>
-                    <p:commandButton value="Actualizar imagen" 
+                    <p:commandButton value="Imagen" 
                                      style="margin-top: 3px;" process="@this" 
                                      styleClass="button-16 b-greylight-16" icon="ui-icon-image"
                                      action="#{detallePresupuestoMB.dialogImagen(col)}" update="@form"/>

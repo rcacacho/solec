@@ -101,6 +101,21 @@ public class DetallePresupuestoMB implements Serializable {
     }
 
     public void saveDetalle() throws IOException {
+        if (tipoCantidadSelected == null){
+            JsfUtil.addErrorMessage("Debe ingresar una unidad");
+            return; 
+        }
+        
+        if (detalle.getTotal() == 0){
+            JsfUtil.addErrorMessage("Debe calcular un total");
+            return;
+        }
+        
+        if (detalle.getValorunitario() == 0){
+            JsfUtil.addErrorMessage("Debe ingresar un valor");
+            return;
+        }
+        
         detalle.setIdpresupuesto(presupuesto);
         detalle.setIdtipocantidad(tipoCantidadSelected);
         detalle.setIdtipogasto(tipoGastoSelected);

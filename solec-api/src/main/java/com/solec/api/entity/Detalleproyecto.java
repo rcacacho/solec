@@ -92,6 +92,10 @@ public class Detalleproyecto implements Serializable {
     @Column(name = "motivomodificacion")
     private String motivomodificacion;
 
+    @Column(name = "fechagasto")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechagasto;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")

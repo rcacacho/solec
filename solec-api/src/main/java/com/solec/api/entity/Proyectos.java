@@ -60,6 +60,12 @@ public class Proyectos implements Serializable {
     @Column(name = "totalpresupuesto")
     private Double totalpresupuesto;
 
+    @Column(name = "totalrecibido")
+    private Double totalrecibido;
+
+    @Column(name = "saldo")
+    private Double saldo;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")
@@ -153,6 +159,22 @@ public class Proyectos implements Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public Double getTotalrecibido() {
+        return totalrecibido;
+    }
+
+    public void setTotalrecibido(Double totalrecibido) {
+        this.totalrecibido = totalrecibido;
+    }
+
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
     }
 
     @XmlTransient
