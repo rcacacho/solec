@@ -29,6 +29,18 @@
                                      placeholder="Ingrese el valor"  required="true" requiredMessage="Debes ingresar un dirección" >
                             <p:ajax event="blur" process="@this"/>
                         </p:inputText>
+
+                        <p:outputLabel value="Total Proyecto:" />
+                        <p:outputLabel value="Desembolso Inicial:" />
+
+                        <p:inputText id="tot" value="#{registroPresupuestoMB.presupuesto.totalproyecto}" style="width: 350px;"  
+                                     placeholder="Ingrese la descripción" required="true" requiredMessage="Debes ingresar un total" >
+                            <p:ajax event="blur" process="@this"/>
+                        </p:inputText>
+                        <p:inputText id="inicial" value="#{registroPresupuestoMB.presupuesto.totalrecibido}" style="width: 350px;"  
+                                     placeholder="Ingrese el valor" >
+                            <p:ajax event="blur" process="@this"/>
+                        </p:inputText>
                     </p:panelGrid>
 
                     <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >

@@ -126,7 +126,7 @@ public class DetallePresupuestoMB implements Serializable {
         }
 
         Double total = presupuestoBean.finDetalleProyectoSumByIdProyecto(presupuesto.getIdpresupuesto());
-        presupuesto.setTotalpresupuesto(total);
+        presupuesto.setTotalgastado(total);
         Proyectos pp = presupuestoBean.updateProyecto(presupuesto);
         detalle = null;
         tipoCantidadSelected = null;
@@ -202,7 +202,7 @@ public class DetallePresupuestoMB implements Serializable {
             parametros.put("DIRECTORIO", realPath + File.separator + "resources" + File.separator + "images" + File.separator);
             parametros.put("USUARIO", SesionUsuarioMB.getUserName());
             parametros.put("ID_PRESUPUESTO", idpresupuesto);
-            parametros.put("TOTAL", presupuesto.getTotalpresupuesto());
+            parametros.put("TOTAL", presupuesto.getTotalgastado());
 
             ReporteJasper reporteJasper = JasperUtil.jasperReportPDF(nombreReporte, nombreArchivo, parametros, dataSource);
             StreamedContent streamedContent;

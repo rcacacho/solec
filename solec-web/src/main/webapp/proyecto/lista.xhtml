@@ -83,7 +83,7 @@
                                 <p:outputLabel value="#{col.nombre}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText value="#{col.nombre}" size="22" >
+                                <p:inputText value="#{col.nombre}" size="15" >
                                     <p:ajax event="blur" process="@this"/>
                                 </p:inputText> 
                             </f:facet>
@@ -96,23 +96,36 @@
                                 <p:outputLabel value="#{col.direccion}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText value="#{col.direccion}" size="22" >
+                                <p:inputText value="#{col.direccion}" size="18" >
                                     <p:ajax event="blur" process="@this"/>
                                 </p:inputText> 
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Total recibido" width="8%" >
+                    <p:column headerText="Total proyecto" width="10%" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{col.totalproyecto}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{col.totalproyecto}" size="8" >
+                                    <p:ajax event="blur" process="@this"/>
+                                </p:inputText> 
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Total recibido" width="11%" >
                         <p:outputLabel value="#{col.totalrecibido}"/>
                     </p:column>
 
-                    <p:column headerText="Total gastado" width="8%" >
-                        <p:outputLabel value="#{col.saldo}"/>
+                    <p:column headerText="Total gastado" width="12%" >
+                        <p:outputLabel value="#{col.totalgastado}"/>
                     </p:column>
 
                     <p:column headerText="Saldo" width="8%" >
-
+                        <p:outputLabel value="#{col.saldo}"/>
                     </p:column>
 
                     <p:column headerText="Fecha creado" width="12%" >
@@ -125,8 +138,13 @@
                         <p:rowEditor />
                     </p:column>
 
-                    <p:column width="12%" exportable="false" >
+                    <p:column width="17%" exportable="false" >
                         <p:commandButton value="Detalle" 
+                                         style="margin-top: 3px;" process="@this" 
+                                         styleClass="button-16 b-greylight-16" icon="ui-icon-search"
+                                         action="#{presupuestoBuzonMB.detallePresupuesto(col.idpresupuesto)}" update="@form"/>
+                        
+                        <p:commandButton value="Desembolso" 
                                          style="margin-top: 3px;" process="@this" 
                                          styleClass="button-16 b-greylight-16" icon="ui-icon-search"
                                          action="#{presupuestoBuzonMB.detallePresupuesto(col.idpresupuesto)}" update="@form"/>

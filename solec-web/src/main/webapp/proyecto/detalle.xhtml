@@ -68,10 +68,18 @@
                     <p:column >
                         <p:outputLabel value="Total gastado:" styleClass="colorTitulo" />
                     </p:column>
+                    <p:column >
+                        <p:outputLabel value="Total desembolso:" styleClass="colorTitulo" />
+                    </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.totalpresupuesto}" style="font-size: 16px!important;">
+                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.totalgastado}" style="font-size: 16px!important;">
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel> 
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.totalrecibido}" style="font-size: 16px!important;">
                             <f:convertNumber groupingUsed="true" minFractionDigits="2" />
                         </p:outputLabel> 
                     </p:column>
@@ -161,6 +169,19 @@
                                       invalidFileMessage="El formato del archivo no está permitido" fileLimitMessage="Únicamente es posible cargar un archivo por cada solicitud"
                                       styleClass="no-header" style="font-size: 13px !important; vertical-align: top; ">   
                         </p:fileUpload>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column >
+                        <p:outputLabel value="Fecha de gasto:" styleClass="colorTitulo" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:calendar id="fechaGasto" value="#{detallePresupuestoMB.detalle.fechagasto}" locale="es"
+                                    pattern="dd/MM/yyyy" size="10" showOn="button" mask="true" style="display: flex !important">
+                            <p:ajax event="dateSelect" process="fechaGasto"/>
+                        </p:calendar>
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -271,8 +292,8 @@
                     </p:commandLink>
                 </p:column>
 
-                <p:column headerText="Fecha creado" width="12%" >
-                    <p:outputLabel value="#{col.fechacreacion}">
+                <p:column headerText="Fecha gasto" width="12%" >
+                    <p:outputLabel value="#{col.fechagasto}">
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </p:outputLabel>
                 </p:column>

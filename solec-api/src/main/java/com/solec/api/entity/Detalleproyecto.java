@@ -351,4 +351,12 @@ public class Detalleproyecto implements Serializable {
         this.motivomodificacion = motivomodificacion;
     }
 
+    public Date getFechagasto() {
+        return fechagasto;
+    }
+
+    public void setFechagasto(Date fechagasto) {
+        this.fechagasto = fechagasto;
+    }
+
 }

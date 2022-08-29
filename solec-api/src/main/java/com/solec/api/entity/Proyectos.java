@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -34,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proyectos.findByIdpresupuesto", query = "SELECT p FROM Proyectos p WHERE p.idpresupuesto = :idpresupuesto"),
     @NamedQuery(name = "Proyectos.findByNombre", query = "SELECT p FROM Proyectos p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Proyectos.findByDireccion", query = "SELECT p FROM Proyectos p WHERE p.direccion = :direccion"),
-    @NamedQuery(name = "Proyectos.findByTotalpresupuesto", query = "SELECT p FROM Proyectos p WHERE p.totalpresupuesto = :totalpresupuesto"),
     @NamedQuery(name = "Proyectos.findByFechacreacion", query = "SELECT p FROM Proyectos p WHERE p.fechacreacion = :fechacreacion"),
     @NamedQuery(name = "Proyectos.findByUsuariocreacion", query = "SELECT p FROM Proyectos p WHERE p.usuariocreacion = :usuariocreacion"),
     @NamedQuery(name = "Proyectos.findByActivo", query = "SELECT p FROM Proyectos p WHERE p.activo = :activo")})
@@ -57,8 +58,11 @@ public class Proyectos implements Serializable {
     @Column(name = "direccion")
     private String direccion;
 
-    @Column(name = "totalpresupuesto")
-    private Double totalpresupuesto;
+    @Column(name = "totalproyecto")
+    private Double totalproyecto;
+
+    @Column(name = "totalgastado")
+    private Double totalgastado;
 
     @Column(name = "totalrecibido")
     private Double totalrecibido;
@@ -89,6 +93,10 @@ public class Proyectos implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpresupuesto", fetch = FetchType.LAZY)
     private List<Detalleproyecto> detalleproyectoList;
+
+    @JoinColumn(name = "iddesembolso", referencedColumnName = "iddesembolso")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Desembolso iddesembolso;
 
     public Proyectos() {
     }
@@ -129,12 +137,20 @@ public class Proyectos implements Serializable {
         this.direccion = direccion;
     }
 
-    public Double getTotalpresupuesto() {
-        return totalpresupuesto;
+    public Double getTotalproyecto() {
+        return totalproyecto;
     }
 
-    public void setTotalpresupuesto(Double totalpresupuesto) {
-        this.totalpresupuesto = totalpresupuesto;
+    public void setTotalproyecto(Double totalproyecto) {
+        this.totalproyecto = totalproyecto;
+    }
+
+    public Double getTotalgastado() {
+        return totalgastado;
+    }
+
+    public void setTotalgastado(Double totalgastado) {
+        this.totalgastado = totalgastado;
     }
 
     public Date getFechacreacion() {
@@ -192,6 +208,14 @@ public class Proyectos implements Serializable {
 
     public void setMotivoeliminacion(String motivoeliminacion) {
         this.motivoeliminacion = motivoeliminacion;
+    }
+
+    public Desembolso getIddesembolso() {
+        return iddesembolso;
+    }
+
+    public void setIddesembolso(Desembolso iddesembolso) {
+        this.iddesembolso = iddesembolso;
     }
 
     @Override
