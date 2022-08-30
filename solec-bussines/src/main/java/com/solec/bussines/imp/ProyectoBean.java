@@ -11,7 +11,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.apache.log4j.Logger;
 import com.solec.api.ejb.ProyectoBeanLocal;
+import com.solec.api.entity.Desembolso;
 import com.solec.api.entity.Detalleproyecto;
+import com.solec.api.entity.Proyectodesembolso;
 import com.solec.api.entity.Proyectos;
 
 /**
@@ -213,6 +215,62 @@ public class ProyectoBean implements ProyectoBeanLocal {
             em.merge(detalle);
             em.flush();
             return (detalle);
+        } catch (ConstraintViolationException ex) {
+            String validationError = getConstraintViolationExceptionAsString(ex);
+            log.error(validationError);
+            context.setRollbackOnly();
+            return null;
+        } catch (Exception ex) {
+            processException(ex);
+            context.setRollbackOnly();
+            return null;
+        }
+    }
+
+    @Override
+    public Desembolso saveDesembolso(Desembolso desembolso) {
+        try {
+            desembolso.setActivo(true);
+            desembolso.setFechacreacion(new Date());
+            em.persist(desembolso);
+            em.flush();
+            return (desembolso);
+        } catch (ConstraintViolationException ex) {
+            String validationError = getConstraintViolationExceptionAsString(ex);
+            log.error(validationError);
+            context.setRollbackOnly();
+            return null;
+        } catch (Exception ex) {
+            processException(ex);
+            context.setRollbackOnly();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Proyectodesembolso> listProyectoDesembolso(Integer idpresupuesto) {
+        if (idpresupuesto == null) {
+            return null;
+        }
+
+        List<Proyectodesembolso> lst = em.createQuery("SELECT col FROM Proyectodesembolso col WHERE col.idproyecto.idpresupuesto =:idpresupuesto and col.activo = true order by col.fechacreacion desc ", Proyectodesembolso.class)
+                .setParameter("idpresupuesto", idpresupuesto)
+                .getResultList();
+
+        if (lst == null || lst.isEmpty()) {
+            return null;
+        }
+        return lst;
+    }
+
+    @Override
+    public Proyectodesembolso saveProyectoDesembolso(Proyectodesembolso proyectodesembolso) {
+        try {
+            proyectodesembolso.setActivo(true);
+            proyectodesembolso.setFechacreacion(new Date());
+            em.persist(proyectodesembolso);
+            em.flush();
+            return (proyectodesembolso);
         } catch (ConstraintViolationException ex) {
             String validationError = getConstraintViolationExceptionAsString(ex);
             log.error(validationError);

@@ -1,6 +1,5 @@
 package com.solec.web.presupuesto;
 
-import com.solec.api.ejb.CatalogoBeanLocal;
 import com.solec.web.utils.JsfUtil;
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +10,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
 import com.solec.api.ejb.ProyectoBeanLocal;
+import com.solec.api.entity.Desembolso;
+import com.solec.api.entity.Proyectodesembolso;
 import com.solec.api.entity.Proyectos;
+import com.solec.web.utils.SesionUsuarioMB;
+import java.io.IOException;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -31,6 +35,8 @@ public class PresupuestoBuzonMB implements Serializable {
     private String nombre;
     private Date fechaInicio;
     private Date fechaFin;
+    private Proyectos proyectoSelected;
+    private Desembolso desembolso;
 
     @PostConstruct
     public void init() {
@@ -56,12 +62,38 @@ public class PresupuestoBuzonMB implements Serializable {
         Proyectos tipo = (Proyectos) value;
 
         if (tipo != null) {
+            tipo.setSaldo(tipo.getTotalrecibido() - tipo.getTotalgastado());
             Proyectos tt = presupuestoBean.updateProyecto(tipo);
             JsfUtil.addSuccessMessage("Se actualizo el proyecto exitosamente");
             listPresupuesto = presupuestoBean.ListProyectos();
         } else {
             JsfUtil.addErrorMessage("Sucedio un error al actualizar el registro");
         }
+    }
+
+    public void dialogDesembolso(Proyectos pro) {
+        RequestContext.getCurrentInstance().execute("PF('dlgDesembolso').show()");
+        desembolso = null;
+        desembolso = new Desembolso();
+        proyectoSelected = pro;
+    }
+
+    public void guardarDesembolso() throws IOException {
+        desembolso.setUsuariocreacion(SesionUsuarioMB.getUserName());
+
+        Desembolso des = presupuestoBean.saveDesembolso(desembolso);
+        if (des != null) {
+            Proyectodesembolso proDes = new Proyectodesembolso();
+            proDes.setIdproyecto(proyectoSelected);
+            proDes.setIddesembolso(desembolso);
+            Proyectodesembolso pp = presupuestoBean.saveProyectoDesembolso(proDes);
+            JsfUtil.addSuccessMessage("Desembolso registrado exitosamente");
+        }
+        listPresupuesto = presupuestoBean.ListProyectos();
+    }
+
+    public void cerrarDialog() {
+        RequestContext.getCurrentInstance().execute("PF('dlgDesembolso').hide()");
     }
 
     /*Metodos getters y setters*/
@@ -95,6 +127,14 @@ public class PresupuestoBuzonMB implements Serializable {
 
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
+    }
+
+    public Desembolso getDesembolso() {
+        return desembolso;
+    }
+
+    public void setDesembolso(Desembolso desembolso) {
+        this.desembolso = desembolso;
     }
 
 }

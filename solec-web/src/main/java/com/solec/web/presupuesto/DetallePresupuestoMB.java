@@ -32,6 +32,7 @@ import org.primefaces.model.UploadedFile;
 import com.solec.api.ejb.ProyectoBeanLocal;
 import com.solec.api.entity.Detalleproyecto;
 import com.solec.api.entity.Proyectos;
+import com.solec.api.enums.ConfiguracionEnum;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.primefaces.event.RowEditEvent;
@@ -101,21 +102,21 @@ public class DetallePresupuestoMB implements Serializable {
     }
 
     public void saveDetalle() throws IOException {
-        if (tipoCantidadSelected == null){
+        if (tipoCantidadSelected == null) {
             JsfUtil.addErrorMessage("Debe ingresar una unidad");
-            return; 
+            return;
         }
-        
-        if (detalle.getTotal() == 0){
+
+        if (detalle.getTotal() == 0) {
             JsfUtil.addErrorMessage("Debe calcular un total");
             return;
         }
-        
-        if (detalle.getValorunitario() == 0){
+
+        if (detalle.getValorunitario() == 0) {
             JsfUtil.addErrorMessage("Debe ingresar un valor");
             return;
         }
-        
+
         detalle.setIdpresupuesto(presupuesto);
         detalle.setIdtipocantidad(tipoCantidadSelected);
         detalle.setIdtipogasto(tipoGastoSelected);
@@ -173,7 +174,7 @@ public class DetallePresupuestoMB implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        String ubicacionArchivo = "\\opt\\image\\";
+        String ubicacionArchivo = catalogoBeanLocal.findConfiguracionByParametro(ConfiguracionEnum.RUTA_ARCHIVO.getParametro()).getValor();
         String nombreArchivo = event.getFile().getFileName();
         detalle.setReferencianombre(JsfUtil.quitarExtension(nombreArchivo));
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -260,9 +261,9 @@ public class DetallePresupuestoMB implements Serializable {
         motivoEliminacion = null;
         detalleSelectedImagen = det;
     }
-    
-        public void handleFileUploadActualizacion(FileUploadEvent event) {
-        String ubicacionArchivo = "\\opt\\image\\";
+
+    public void handleFileUploadActualizacion(FileUploadEvent event) {
+        String ubicacionArchivo = catalogoBeanLocal.findConfiguracionByParametro(ConfiguracionEnum.RUTA_ARCHIVO.getParametro()).getValor();
         String nombreArchivo = event.getFile().getFileName();
         detalleSelectedImagen.setReferencianombre(JsfUtil.quitarExtension(nombreArchivo));
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");

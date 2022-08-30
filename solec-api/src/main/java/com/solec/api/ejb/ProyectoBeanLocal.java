@@ -1,6 +1,8 @@
 package com.solec.api.ejb;
 
+import com.solec.api.entity.Desembolso;
 import com.solec.api.entity.Detalleproyecto;
+import com.solec.api.entity.Proyectodesembolso;
 import com.solec.api.entity.Proyectos;
 import java.util.List;
 
@@ -29,5 +31,11 @@ public interface ProyectoBeanLocal {
     Detalleproyecto eliminarDetalleProyecto(Integer iddetallepresupuesto, String usuario, String motivo);
 
     Detalleproyecto updateDetalleProyecto(Detalleproyecto detalle);
+
+    Desembolso saveDesembolso(Desembolso desembolso);
+    
+    List<Proyectodesembolso> listProyectoDesembolso(Integer idpresupuesto);
+    
+    Proyectodesembolso saveProyectoDesembolso(Proyectodesembolso proyectodesembolso);
 
 }

@@ -6,6 +6,7 @@
         <class>com.solec.api.entity.Desembolso</class>
         <class>com.solec.api.entity.Detalleproyecto</class>
         <class>com.solec.api.entity.Proyectos</class>
+        <class>com.solec.api.entity.Proyectodesembolso</class>
         <class>com.solec.api.entity.Tipocantidad</class>
         <class>com.solec.api.entity.Tipogasto</class>
         <class>com.solec.api.entity.Usuarios</class>

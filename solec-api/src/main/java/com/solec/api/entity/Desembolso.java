@@ -2,18 +2,23 @@ package com.solec.api.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,28 +42,31 @@ public class Desembolso implements Serializable {
     @NotNull
     @Column(name = "iddesembolso")
     private Integer iddesembolso;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
     private float cantidad;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "usuariocreacion")
     private String usuariocreacion;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
     private boolean activo;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddesembolso", fetch = FetchType.LAZY)
+    private List<Proyectodesembolso> proyectodesembolsoList;
 
     public Desembolso() {
     }
@@ -139,5 +147,14 @@ public class Desembolso implements Serializable {
     public String toString() {
         return "com.solec.api.entity.Desembolso[ iddesembolso=" + iddesembolso + " ]";
     }
-    
+
+    @XmlTransient
+    public List<Proyectodesembolso> getProyectodesembolsoList() {
+        return proyectodesembolsoList;
+    }
+
+    public void setProyectodesembolsoList(List<Proyectodesembolso> proyectodesembolsoList) {
+        this.proyectodesembolsoList = proyectodesembolsoList;
+    }
+
 }

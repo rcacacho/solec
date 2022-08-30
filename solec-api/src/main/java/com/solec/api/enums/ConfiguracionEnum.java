@@ -6,7 +6,7 @@ package com.solec.api.enums;
  */
 public enum ConfiguracionEnum {
     
-    CARPETA_ARCHIVOS("CARPETA_ARCHIVOS");
+    RUTA_ARCHIVO("RUTA_ARCHIVO");
 
     private String parametro;
 

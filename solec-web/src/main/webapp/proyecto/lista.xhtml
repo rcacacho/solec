@@ -117,7 +117,16 @@
                     </p:column>
 
                     <p:column headerText="Total recibido" width="11%" >
-                        <p:outputLabel value="#{col.totalrecibido}"/>
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <p:outputLabel value="#{col.totalrecibido}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{col.totalrecibido}" size="8" >
+                                    <p:ajax event="blur" process="@this"/>
+                                </p:inputText> 
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
 
                     <p:column headerText="Total gastado" width="12%" >
@@ -143,14 +152,29 @@
                                          style="margin-top: 3px;" process="@this" 
                                          styleClass="button-16 b-greylight-16" icon="ui-icon-search"
                                          action="#{presupuestoBuzonMB.detallePresupuesto(col.idpresupuesto)}" update="@form"/>
-                        
+
                         <p:commandButton value="Desembolso" 
                                          style="margin-top: 3px;" process="@this" 
-                                         styleClass="button-16 b-greylight-16" icon="ui-icon-search"
+                                         styleClass="button-16 b-greylight-16" icon="ui-icon-circle-plus"
                                          action="#{presupuestoBuzonMB.detallePresupuesto(col.idpresupuesto)}" update="@form"/>
                     </p:column>
                 </p:dataTable>
             </div>
+
+            <p:dialog header="Ingresar desembolso" widgetVar="dlgDesembolso" id="dlgDesembolso" 
+                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="550px">
+                <p:panelGrid id="pgDes" columns="1" styleClass="no-border" style="width: 100%;"  >
+                    <p:outputLabel value="Cantidad:" styleClass="colorTitulo" style="font-weight: bold;" />
+                    <p:inputText value="#{presupuestoBuzonMB.desembolso.cantidad}" size="50" style="font-size: 16px!important;">
+                        <p:ajax event="blur" process="@this"/>
+                    </p:inputText>
+                    <p:outputPanel  style="margin-top: 4%; margin-bottom: 20px; margin-right: 6%; margin-left: 34%;  font-size: 14px;"  >
+                        <p:commandButton value="Guardar" action="#{presupuestoBuzonMB.guardarDesembolso()}" icon="ui-icon-disk" process="dlgDesembolso"  
+                                         style=" margin-left: 5px; " onstart="return confirm('¿Confirmas guardar el desembolso?');" update="@form"/>
+                        <p:commandButton value="Cancelar" process="@this" action="#{presupuestoBuzonMB.cerrarDialog()}" icon="ui-icon-close" style="margin-left: 12px; " update="@form"/>
+                    </p:outputPanel>
+                </p:panelGrid>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>
