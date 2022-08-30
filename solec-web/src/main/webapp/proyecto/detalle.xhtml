@@ -293,9 +293,19 @@
                 </p:column>
 
                 <p:column headerText="Fecha gasto" width="12%" >
-                    <p:outputLabel value="#{col.fechagasto}">
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                    </p:outputLabel>
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{col.fechagasto}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:outputLabel>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:calendar  value="#{col.fechagasto}" locale="es"
+                                        pattern="dd/MM/yyyy" size="5" showOn="button" mask="true" style="display: flex !important">
+                                <p:ajax event="dateSelect" />
+                            </p:calendar>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column width="16%" exportable="false" >

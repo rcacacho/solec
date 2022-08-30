@@ -171,7 +171,7 @@ public class ProyectoBean implements ProyectoBeanLocal {
             return null;
         }
 
-        List<Double> lst = em.createQuery("SELECT sum (col.total) FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto ", Double.class)
+        List<Double> lst = em.createQuery("SELECT sum (col.total) FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto and col.activo = true ", Double.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 

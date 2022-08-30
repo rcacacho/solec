@@ -86,7 +86,11 @@ public class PresupuestoBuzonMB implements Serializable {
             Proyectodesembolso proDes = new Proyectodesembolso();
             proDes.setIdproyecto(proyectoSelected);
             proDes.setIddesembolso(desembolso);
+            proDes.setUsuariocreacion(SesionUsuarioMB.getUserName());
             Proyectodesembolso pp = presupuestoBean.saveProyectoDesembolso(proDes);
+
+            proyectoSelected.setTotalrecibido(proyectoSelected.getTotalrecibido() + desembolso.getCantidad());
+            Proyectos proyec = presupuestoBean.updateProyecto(proyectoSelected);
             JsfUtil.addSuccessMessage("Desembolso registrado exitosamente");
         }
         listPresupuesto = presupuestoBean.ListProyectos();

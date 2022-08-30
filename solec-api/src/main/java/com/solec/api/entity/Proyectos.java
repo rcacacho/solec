@@ -94,10 +94,6 @@ public class Proyectos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpresupuesto", fetch = FetchType.LAZY)
     private List<Detalleproyecto> detalleproyectoList;
 
-    @JoinColumn(name = "iddesembolso", referencedColumnName = "iddesembolso")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Desembolso iddesembolso;
-
     public Proyectos() {
     }
 
@@ -208,14 +204,6 @@ public class Proyectos implements Serializable {
 
     public void setMotivoeliminacion(String motivoeliminacion) {
         this.motivoeliminacion = motivoeliminacion;
-    }
-
-    public Desembolso getIddesembolso() {
-        return iddesembolso;
-    }
-
-    public void setIddesembolso(Desembolso iddesembolso) {
-        this.iddesembolso = iddesembolso;
     }
 
     @Override
