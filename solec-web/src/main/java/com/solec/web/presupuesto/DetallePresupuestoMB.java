@@ -224,6 +224,10 @@ public class DetallePresupuestoMB implements Serializable {
     public void eliminarDetalle() throws IOException {
         Detalleproyecto response = presupuestoBean.eliminarDetalleProyecto(detalleSelected.getIddetallepresupuesto(), SesionUsuarioMB.getUserName(), motivoEliminacion);
         if (response != null) {
+            Double total = presupuestoBean.finDetalleProyectoSumByIdProyecto(presupuesto.getIdpresupuesto());
+            presupuesto.setTotalgastado(total);
+
+            Proyectos pp = presupuestoBean.updateProyecto(presupuesto);
             listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
             JsfUtil.addSuccessMessage("Se elimino el registro exitosamente");
             return;
@@ -249,6 +253,11 @@ public class DetallePresupuestoMB implements Serializable {
         if (tipo != null) {
             tipo.setTotal(tipo.getCantidad() * tipo.getValorunitario());
             Detalleproyecto tt = presupuestoBean.updateDetalleProyecto(tipo);
+
+            Double total = presupuestoBean.finDetalleProyectoSumByIdProyecto(presupuesto.getIdpresupuesto());
+            presupuesto.setTotalgastado(total);
+            Proyectos pp = presupuestoBean.updateProyecto(presupuesto);
+
             JsfUtil.addSuccessMessage("Se actualizo exitosamente");
             listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
         } else {
