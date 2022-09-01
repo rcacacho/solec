@@ -106,7 +106,9 @@
                     <p:column headerText="Total proyecto" width="10%" >
                         <p:cellEditor>
                             <f:facet name="output">
-                                <p:outputLabel value="#{col.totalproyecto}"/>
+                                <p:outputLabel value="#{col.totalproyecto}">
+                                    <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                                </p:outputLabel>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputText value="#{col.totalproyecto}" size="8" >
@@ -119,7 +121,9 @@
                     <p:column headerText="Total recibido" width="11%" >
                         <p:cellEditor>
                             <f:facet name="output">
-                                <p:outputLabel value="#{col.totalrecibido}"/>
+                                <p:outputLabel value="#{col.totalrecibido}">
+                                    <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                                </p:outputLabel>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputText value="#{col.totalrecibido}" size="8" >
@@ -130,11 +134,15 @@
                     </p:column>
 
                     <p:column headerText="Total gastado" width="12%" >
-                        <p:outputLabel value="#{col.totalgastado}"/>
+                        <p:outputLabel value="#{col.totalgastado}">
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel>
                     </p:column>
 
                     <p:column headerText="Saldo" width="8%" >
-                        <p:outputLabel value="#{col.saldo}"/>
+                        <p:outputLabel value="#{col.saldo}">
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel>
                     </p:column>
 
                     <p:column headerText="Fecha creado" width="12%" >

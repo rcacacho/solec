@@ -155,7 +155,7 @@ public class ProyectoBean implements ProyectoBeanLocal {
             return null;
         }
 
-        List<Detalleproyecto> lst = em.createQuery("SELECT col FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto and col.activo = true order by col.fechacreacion desc ", Detalleproyecto.class)
+        List<Detalleproyecto> lst = em.createQuery("SELECT col FROM Detalleproyecto col WHERE col.idpresupuesto.idpresupuesto =:idpresupuesto and col.activo = true order by col.fechagasto desc ", Detalleproyecto.class)
                 .setParameter("idpresupuesto", idpresupuesto)
                 .getResultList();
 

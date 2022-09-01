@@ -71,6 +71,9 @@
                     <p:column >
                         <p:outputLabel value="Total desembolso:" styleClass="colorTitulo" />
                     </p:column>
+                    <p:column >
+                        <p:outputLabel value="Saldo:" styleClass="colorTitulo" />
+                    </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
@@ -80,6 +83,11 @@
                     </p:column>
                     <p:column>
                         <p:outputLabel value="#{detallePresupuestoMB.presupuesto.totalrecibido}" style="font-size: 16px!important;">
+                            <f:convertNumber groupingUsed="true" minFractionDigits="2" />
+                        </p:outputLabel> 
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{detallePresupuestoMB.presupuesto.saldo}" style="font-size: 16px!important;">
                             <f:convertNumber groupingUsed="true" minFractionDigits="2" />
                         </p:outputLabel> 
                     </p:column>
@@ -213,7 +221,7 @@
             <p:dataTable id="dt_detalle" var="col" value="#{detallePresupuestoMB.listDetalle}"
                          emptyMessage="No hay presupuestos registrados" editable="true" 
                          styleClass="tabla-mp" style="width: 95%" rowIndexVar="rowId"
-                         rows="15" paginator="#{detallePresupuestoMB.listDetalle.size()>15}"  paginatorPosition="bottom"
+                         rows="30" paginator="#{detallePresupuestoMB.listDetalle.size()>30}"  paginatorPosition="bottom"
                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
 
                 <p:ajax event="rowEdit" listener="#{detallePresupuestoMB.onRowEdit}" update="dt_detalle" />
@@ -301,7 +309,7 @@
                         </f:facet>
                         <f:facet name="input">
                             <p:calendar  value="#{col.fechagasto}" locale="es"
-                                        pattern="dd/MM/yyyy" size="5" showOn="button" mask="true" style="display: flex !important">
+                                         pattern="dd/MM/yyyy" size="5" showOn="button" mask="true" style="display: flex !important">
                                 <p:ajax event="dateSelect" />
                             </p:calendar>
                         </f:facet>
