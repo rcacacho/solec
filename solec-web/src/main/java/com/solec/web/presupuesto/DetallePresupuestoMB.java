@@ -128,6 +128,7 @@ public class DetallePresupuestoMB implements Serializable {
 
         Double total = presupuestoBean.finDetalleProyectoSumByIdProyecto(presupuesto.getIdpresupuesto());
         presupuesto.setTotalgastado(total);
+        presupuesto.setSaldo(presupuesto.getTotalrecibido() - presupuesto.getTotalgastado());
         Proyectos pp = presupuestoBean.updateProyecto(presupuesto);
         detalle = null;
         tipoCantidadSelected = null;
@@ -224,7 +225,7 @@ public class DetallePresupuestoMB implements Serializable {
         if (response != null) {
             Double total = presupuestoBean.finDetalleProyectoSumByIdProyecto(presupuesto.getIdpresupuesto());
             presupuesto.setTotalgastado(total);
-
+            presupuesto.setSaldo(presupuesto.getTotalrecibido() - presupuesto.getTotalgastado());
             Proyectos pp = presupuestoBean.updateProyecto(presupuesto);
             listDetalle = presupuestoBean.ListDetalleProyectoByIdPresupuesto(idpresupuesto);
             JsfUtil.addSuccessMessage("Se elimino el registro exitosamente");
@@ -254,6 +255,7 @@ public class DetallePresupuestoMB implements Serializable {
 
             Double total = presupuestoBean.finDetalleProyectoSumByIdProyecto(presupuesto.getIdpresupuesto());
             presupuesto.setTotalgastado(total);
+            presupuesto.setSaldo(presupuesto.getTotalrecibido() - presupuesto.getTotalgastado());
             Proyectos pp = presupuestoBean.updateProyecto(presupuesto);
 
             JsfUtil.addSuccessMessage("Se actualizo exitosamente");
