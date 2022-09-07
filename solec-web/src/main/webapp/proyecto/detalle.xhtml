@@ -6,6 +6,7 @@
                 xmlns:h="http://java.sun.com/jsf/html" 
                 xmlns:p="http://primefaces.org/ui"
                 template="/templates/template.xhtml"
+                xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:shiro="http://shiro.apache.org/tags">
 
     <f:metadata>
@@ -230,7 +231,7 @@
                     #{rowId+1}
                 </p:column>
 
-                <p:column headerText="Tipo Cantidad" width="20%" >
+                <p:column headerText="Tipo Cantidad" width="18%" >
                     <p:cellEditor>
                         <f:facet name="output">
                             <p:outputLabel value="#{col.idtipocantidad.nombres}"/>
@@ -246,7 +247,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Descripción" width="25%" >
+                <p:column headerText="Descripción" width="20%" >
                     <p:cellEditor>
                         <f:facet name="output">
                             <p:outputLabel value="#{col.descripcion}"/>
@@ -272,7 +273,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Valor unitario" width="13%" >
+                <p:column headerText="Valor unitario" width="11%" >
                     <p:cellEditor>
                         <f:facet name="output">
                             <p:outputLabel value="#{col.valorunitario}"/>
@@ -285,7 +286,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Total" width="12%" >
+                <p:column headerText="Total" width="11%" >
                     <p:outputLabel value="#{col.total}">
                         <f:convertNumber groupingUsed="true" minFractionDigits="2" />
                     </p:outputLabel>
@@ -298,6 +299,14 @@
                                    title="Descargar" ajax="false" immediate="true">
                         <p:fileDownload value="#{detallePresupuestoMB.downloadFile(col)}" />
                     </p:commandLink>
+                    <p:commandButton value="Actualizar" 
+                                     style="margin-top: 3px;" process="@this" 
+                                     styleClass="button-16 b-greylight-16" icon="ui-icon-arrowthick-1-n"
+                                     action="#{detallePresupuestoMB.dialogImagen(col)}" update="@form"/>
+                    <p:commandButton value="Visualizar" 
+                                     style="margin-top: 3px;" process="@this" 
+                                     styleClass="button-16 b-greylight-16" icon="ui-icon-image"
+                                     action="#{detallePresupuestoMB.dialogVerImagen(col)}" update="@form"/>
                 </p:column>
 
                 <p:column headerText="Fecha gasto" width="12%" >
@@ -316,15 +325,11 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column width="16%" exportable="false" >
+                <p:column width="13%" exportable="false" >
                     <p:commandButton value="Eliminar" 
                                      style="float:left!important;" process="@this" 
                                      styleClass="button-16 b-greylight-16" icon="ui-icon-closethick"
                                      action="#{detallePresupuestoMB.dialogEliminar(col)}" update="@form"/>
-                    <p:commandButton value="Imagen" 
-                                     style="margin-top: 3px;" process="@this" 
-                                     styleClass="button-16 b-greylight-16" icon="ui-icon-image"
-                                     action="#{detallePresupuestoMB.dialogImagen(col)}" update="@form"/>
                 </p:column>
 
                 <p:column headerText="Editar" width="8%">
@@ -381,6 +386,19 @@
                     </p:fileUpload>
                 </p:panelGrid>
             </p:dialog>
-        </h:form>
+            <p:dialog header="Visualizar PDF" widgetVar="dlgPdf" id="dlgPdf" 
+                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="550px">
+                <p:panelGrid id="pgPdf" columns="1" styleClass="no-border" style="width: 100%;"  >
+                    <pe:documentViewer height="500" url="#{detallePresupuestoMB.rutaArchivo}"/>
+                </p:panelGrid>
+            </p:dialog>
+
+            <p:dialog header="Visualizar Imagen" widgetVar="dlgImage" id="dlgImage" 
+                      onShow="stop();"  onHide="stop();" modal="true" position="top" resizable="false" width="550px">
+                <p:panelGrid id="pgImagen" columns="1" styleClass="no-border" style="width: 100%;"  >
+                    <p:graphicImage value="#{detallePresupuestoMB.rutaArchivo}" library="demo"/>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>  
     </ui:define>
 </ui:composition>

@@ -33,8 +33,6 @@ import com.solec.api.ejb.ProyectoBeanLocal;
 import com.solec.api.entity.Detalleproyecto;
 import com.solec.api.entity.Proyectos;
 import com.solec.api.enums.ConfiguracionEnum;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -72,6 +70,7 @@ public class DetallePresupuestoMB implements Serializable {
     private String motivoEliminacion;
     private Detalleproyecto detalleSelected;
     private Detalleproyecto detalleSelectedImagen;
+    private StreamedContent rutaArchivo;
 
     public DetallePresupuestoMB() {
         detalle = new Detalleproyecto();
@@ -288,6 +287,23 @@ public class DetallePresupuestoMB implements Serializable {
         }
     }
 
+    public void dialogVerImagen(Detalleproyecto det) {
+        if (det.getNombrearchivo() == null) {
+            JsfUtil.addErrorMessage("No se tiene un archivo cargado");
+            return;
+        }
+
+        if (det.getNombrearchivo().contains(".pdf")) {
+            rutaArchivo = FileUtil.getStreamedContent(det.getDirectorio(), det.getNombrearchivo());
+            //rutaArchivo = det.getDirectorio() + det.getNombrearchivo();
+            RequestContext.getCurrentInstance().execute("PF('dlgPdf').show()");
+        } else {
+            rutaArchivo = FileUtil.getStreamedContent(det.getDirectorio(), det.getNombrearchivo());
+            //rutaArchivo = det.getDirectorio() + det.getNombrearchivo();
+            RequestContext.getCurrentInstance().execute("PF('dlgImage').show()");
+        }
+    }
+
     /*Metodos getters y setters*/
     public Integer getIdpresupuesto() {
         return idpresupuesto;
@@ -391,6 +407,14 @@ public class DetallePresupuestoMB implements Serializable {
 
     public void setDetalleSelected(Detalleproyecto detalleSelected) {
         this.detalleSelected = detalleSelected;
+    }
+
+    public StreamedContent getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    public void setRutaArchivo(StreamedContent rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
     }
 
 }
